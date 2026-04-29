@@ -106,6 +106,19 @@
   .rc-diagnosis { font-weight: 600; margin: 4px 0 6px 0; padding: 6px 10px;
     background: rgba(255,255,255,0.6); border-radius: 4px; font-size: 12.5px; }
 
+  /* 캠페인 타입별 카드 */
+  .type-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 12px; margin-bottom: 14px; }
+  .type-card { padding: 12px 14px; border-radius: 6px; }
+  .type-card-title { font-weight: 700; margin-bottom: 4px; font-size: 13.5px;
+    display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; }
+  .type-card-diagnosis { font-weight: 600; font-size: 12.5px; margin-bottom: 8px;
+    padding: 5px 10px; background: rgba(255,255,255,0.6); border-radius: 3px; }
+  .type-mini-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  .type-mini-table th, .type-mini-table td { padding: 4px 8px; border-bottom: 1px solid rgba(0,0,0,0.06); text-align: left; }
+  .type-mini-table th { background: rgba(0,0,0,0.03); font-weight: 600; font-size: 10.5px; }
+  .type-mini-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .type-mini-table tr.hi { background: rgba(255,255,255,0.6); font-weight: 600; }
+
   /* 🏷️ 브랜드 점유율 표 */
   .brand-table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .brand-table th, .brand-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); text-align: left; }
@@ -252,6 +265,127 @@
             
             <ul><li>가격 시계열 데이터 1일치만 누적됨 (의미 있는 추이 진단은 7일+ 필요)</li></ul>
           </div>
+        </div>
+
+  <h3>🎯 캠페인 타입별 분리 진단 — 합산 평균의 함정 해소</h3>
+  <p class="muted" style="font-size:11.5px">사용자 명시: "스마트스토어 유입 ↑". 합산 평균이 SHOPPING ↑ / WEB_SITE ↓ 같은 정반대 패턴을 가림. 타입별로 분리해서 진짜 문제 식별.</p>
+  <div class="type-cards-grid">
+        <div class="type-card" style="border-left:4px solid #16a34a;background:#f0fdf4">
+          <div class="type-card-title">✅ 🔍 파워링크 (WEB_SITE)
+            <span class="rc-verdict" style="color:#16a34a">scale_down_ok</span></div>
+          <div class="type-card-diagnosis">✅ 비용 절감 합리 — 비용 -13% 했지만 매출 -27% 양호</div>
+          <table class="type-mini-table">
+            <thead><tr><th>지표</th><th class='num'>최근 7일</th><th class='num'>이전 23일</th><th class='num'>변화</th></tr></thead>
+            <tbody>
+              <tr><td>광고비/일</td>
+                  <td class='num'>₩186,971</td>
+                  <td class='num'>₩215,715</td>
+                  <td class='num'>-13.3%</td></tr>
+              <tr><td>노출/일</td>
+                  <td class='num'>5,337</td>
+                  <td class='num'>15,842</td>
+                  <td class='num'>-66.3%</td></tr>
+              <tr><td>클릭/일 (유입)</td>
+                  <td class='num'>153</td>
+                  <td class='num'>239</td>
+                  <td class='num'>-36.1%</td></tr>
+              <tr><td>비용당 유입 효율</td>
+                  <td class='num'>—</td>
+                  <td class='num'>—</td>
+                  <td class='num'>-26.3%</td></tr>
+              <tr><td>총 ROAS</td>
+                  <td class='num'>1036%</td>
+                  <td class='num'>1283%</td>
+                  <td class='num'>-247pt</td></tr>
+              <tr class='hi'><td>구매완료 ROAS</td>
+                  <td class='num'>338%</td>
+                  <td class='num'>424%</td>
+                  <td class='num'>-87pt</td></tr>
+              <tr class='hi'><td>구매 매출/일</td>
+                  <td class='num'>₩658,633</td>
+                  <td class='num'>₩900,114</td>
+                  <td class='num'>-26.8%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="type-card" style="border-left:4px solid #7c3aed;background:#faf5ff">
+          <div class="type-card-title">🔍 🛒 쇼핑검색 (SHOPPING) — 스마트스토어
+            <span class="rc-verdict" style="color:#7c3aed">downstream_issue</span></div>
+          <div class="type-card-diagnosis">🔍 광고는 효율적인데 매출 빠짐 — 후단(전환·UX·가격) 문제 의심</div>
+          <table class="type-mini-table">
+            <thead><tr><th>지표</th><th class='num'>최근 7일</th><th class='num'>이전 23일</th><th class='num'>변화</th></tr></thead>
+            <tbody>
+              <tr><td>광고비/일</td>
+                  <td class='num'>₩162,837</td>
+                  <td class='num'>₩130,522</td>
+                  <td class='num'>+24.8%</td></tr>
+              <tr><td>노출/일</td>
+                  <td class='num'>22,350</td>
+                  <td class='num'>4,855</td>
+                  <td class='num'>+360.4%</td></tr>
+              <tr><td>클릭/일 (유입)</td>
+                  <td class='num'>77</td>
+                  <td class='num'>49</td>
+                  <td class='num'>+57.7%</td></tr>
+              <tr><td>비용당 유입 효율</td>
+                  <td class='num'>—</td>
+                  <td class='num'>—</td>
+                  <td class='num'>+26.4%</td></tr>
+              <tr><td>총 ROAS</td>
+                  <td class='num'>427%</td>
+                  <td class='num'>1423%</td>
+                  <td class='num'>-996pt</td></tr>
+              <tr class='hi'><td>구매완료 ROAS</td>
+                  <td class='num'>107%</td>
+                  <td class='num'>436%</td>
+                  <td class='num'>-329pt</td></tr>
+              <tr class='hi'><td>구매 매출/일</td>
+                  <td class='num'>₩159,517</td>
+                  <td class='num'>₩289,508</td>
+                  <td class='num'>-44.9%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="type-card" style="border-left:4px solid #6b7280;background:#f8fafc">
+          <div class="type-card-title">⚪ 🏷️ 브랜드검색 (BRAND_SEARCH)
+            <span class="rc-verdict" style="color:#6b7280">inactive</span></div>
+          <div class="type-card-diagnosis">⚪ 비활성 — 광고비 거의 0</div>
+          <table class="type-mini-table">
+            <thead><tr><th>지표</th><th class='num'>최근 7일</th><th class='num'>이전 23일</th><th class='num'>변화</th></tr></thead>
+            <tbody>
+              <tr><td>광고비/일</td>
+                  <td class='num'>₩0</td>
+                  <td class='num'>₩0</td>
+                  <td class='num'>+0.0%</td></tr>
+              <tr><td>노출/일</td>
+                  <td class='num'>18</td>
+                  <td class='num'>25</td>
+                  <td class='num'>-28.9%</td></tr>
+              <tr><td>클릭/일 (유입)</td>
+                  <td class='num'>8</td>
+                  <td class='num'>9</td>
+                  <td class='num'>-13.5%</td></tr>
+              <tr><td>비용당 유입 효율</td>
+                  <td class='num'>—</td>
+                  <td class='num'>—</td>
+                  <td class='num'>+0.0%</td></tr>
+              <tr><td>총 ROAS</td>
+                  <td class='num'>0%</td>
+                  <td class='num'>0%</td>
+                  <td class='num'>+0pt</td></tr>
+              <tr class='hi'><td>구매완료 ROAS</td>
+                  <td class='num'>0%</td>
+                  <td class='num'>0%</td>
+                  <td class='num'>+0pt</td></tr>
+              <tr class='hi'><td>구매 매출/일</td>
+                  <td class='num'>₩89,750</td>
+                  <td class='num'>₩154,612</td>
+                  <td class='num'>-42.0%</td></tr>
+            </tbody>
+          </table>
+        </div>
         </div>
 
   <h3>💡 데이터 기반 액션 추천 (우선순위순)</h3>
@@ -1397,7 +1531,7 @@
   옵티마이저 target 350% 는 구매완료 기준.
   <br><br>
   <code>data: chair_market.db</code> · 자동 발행 매일 08:00 KST ·
-  생성 시각 2026-04-29 14:54:50
+  생성 시각 2026-04-29 15:24:38
 </footer>
 
 </div>
