@@ -103,6 +103,8 @@
   .rc-action-prio { font-weight: 700; font-size: 13.5px; margin-bottom: 4px; }
   .rc-action-rat { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
   .rc-action ul { margin: 4px 0; padding-left: 18px; font-size: 12.5px; }
+  .rc-diagnosis { font-weight: 600; margin: 4px 0 6px 0; padding: 6px 10px;
+    background: rgba(255,255,255,0.6); border-radius: 4px; font-size: 12.5px; }
 
   /* 🏷️ 브랜드 점유율 표 */
   .brand-table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -215,6 +217,7 @@
             <div class="rc-hyp-title">✅ 🪑 가설 A: 시장 수요 하락
               <span class="rc-verdict" style="color:#16a34a">rejected · conf=high</span>
             </div>
+            
             <ul><li>시장 카테고리 트렌드 7d/30d 변화율: +2.9% (데이터랩 0-100 정규화 기준)</li></ul>
           </div>
         
@@ -222,6 +225,7 @@
             <div class="rc-hyp-title">✅ ⚔️ 가설 B: 경쟁사 검색 트렌드 강세
               <span class="rc-verdict" style="color:#16a34a">rejected · conf=high</span>
             </div>
+            
             <ul><li>시디즈 시리즈 7d/30d -3.6%</li><li>동급 경쟁 7d/30d -2.5%</li></ul>
           </div>
         
@@ -229,20 +233,23 @@
             <div class="rc-hyp-title">⚠️ 🏠 가설 C: 자사 브랜드/제품 인지도 하락
               <span class="rc-verdict" style="color:#ea580c">weak_evidence · conf=medium</span>
             </div>
+            
             <ul><li>자사 (레니프) 그룹 7d/30d +0.0%</li><li>라인업 5 키워드 7d 변화: 유니백체어 프로 -21%, 유니백체어 +28%, 레니프 -6%, 바른설계 +0%, 폴드핏체어 +0%</li><li>하락 ≥10% 키워드 수: 1/5</li></ul>
           </div>
         
           <div class="rc-hyp" style="border-left:4px solid #dc2626;background:#fef2f2">
-            <div class="rc-hyp-title">🚨 🎯 가설 D: 광고 운영 효율 저하
+            <div class="rc-hyp-title">🚨 🎯 가설 D: 광고 운영 효율 (다층 지표)
               <span class="rc-verdict" style="color:#dc2626">supported · conf=high</span>
             </div>
-            <ul><li>CTR 7d/30d 1.10% vs 1.35% (-18.8%)</li><li>CPC 7d/30d ₩1556 vs ₩1248 (+24.7%)</li><li>CVR 7d/30d 2.69% vs 2.51% (+7.3%)</li><li>클릭 7d/30d 239 vs 284 (-15.9%)</li><li>광고비 7d/30d ₩373,185 vs ₩346,951 (+7.6%)</li></ul>
+            <div class="rc-diagnosis">🚨 광고 효율 저하 확실 — 비용 ↑ + ROAS ↓ + 매출 ↓</div>
+            <ul><li>💰 광고비 7d/30d ₩373,185 vs ₩346,951 (+7.6%)</li><li>📊 총 ROAS (구매+장바구니) 728% vs 1057% (-329pt) · 매출 ₩2,643,029 vs ₩3,683,551 (-28.2%)</li><li>🎯 구매완료 ROAS 242% vs 362% (-120pt) · 구매 매출 ₩909,629 vs ₩1,250,985 (-27.3%)</li><li>🔄 비용당 유입 효율 0.64 vs 0.82 클릭/₩1K (-21.8%) — _같은 비용에 더 적은 유입_</li><li>💵 클릭당 구매 매출 ₩3,801 vs ₩4,398 (-13.6%) — _유입 1건당 매출 ↓_</li><li>📍 진단: 🚨 광고 효율 저하 확실 — 비용 ↑ + ROAS ↓ + 매출 ↓</li></ul>
           </div>
         
           <div class="rc-hyp" style="border-left:4px solid #6b7280;background:#f8fafc">
             <div class="rc-hyp-title">⏳ 💰 가설 E: 경쟁사 가격 인하
               <span class="rc-verdict" style="color:#6b7280">evaluation_pending · conf=n/a</span>
             </div>
+            
             <ul><li>가격 시계열 데이터 1일치만 누적됨 (의미 있는 추이 진단은 7일+ 필요)</li></ul>
           </div>
         </div>
@@ -250,9 +257,9 @@
   <h3>💡 데이터 기반 액션 추천 (우선순위순)</h3>
   
           <div class="rc-action">
-            <div class="rc-action-prio">🔴 P0 광고 운영 효율 회복 — CTR/CPC/CVR 진단</div>
-            <div class="rc-action-rat">근거: CTR -19% / CPC +25% / CVR +7% / 클릭 -16%. 입찰 환경 악화 + 소재 피로 의심. CPC 가 평균 대비 ₩+308 상승.</div>
-            <ul><li>CPC 급등 시점(4/22 전후) 캠페인별 입찰가 변동 audit — naver_ads.db 의 daily_stats 검토</li><li>CTR 가장 낮은 광고그룹·소재 식별 → 신규 소재 A/B 테스트 시작</li><li>CVR 변동성 큰 키워드 정리 (저전환 키워드 입찰 -20%)</li></ul>
+            <div class="rc-action-prio">🔴 P0 광고 효율 저하 — ROAS·매출 회복</div>
+            <div class="rc-action-rat">근거: 광고비 +7.6% / 총 ROAS -329pt / 구매 ROAS -120pt / 구매 매출 -27.3%. 다층 지표 동시 악화 → 광고 효율 회복 필요.</div>
+            <ul><li>캠페인 타입별 ROAS audit — 파워링크/쇼핑검색/브랜드검색 어디서 빠지는지 분리 진단</li><li>ROAS 가장 낮은 캠페인의 입찰가·소재·키워드 점검 (target ROAS 미달 그룹부터)</li><li>광고비 효율 회복 위해 ROAS 350% 미달 키워드 입찰 -20%</li></ul>
           </div>
         
           <div class="rc-action">
@@ -1390,7 +1397,7 @@
   옵티마이저 target 350% 는 구매완료 기준.
   <br><br>
   <code>data: chair_market.db</code> · 자동 발행 매일 08:00 KST ·
-  생성 시각 2026-04-29 14:16:41
+  생성 시각 2026-04-29 14:51:51
 </footer>
 
 </div>
