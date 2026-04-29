@@ -335,8 +335,8 @@
 <section>
   <h2>📊 자사 광고 KPI 30일 추세</h2>
   <div class="chart-wrap"><canvas id="roasChart"></canvas></div>
-  <h3>일별 매출·비용</h3>
-  <div class="chart-wrap"><canvas id="revChart"></canvas></div>
+  <h3>일별 매출 구성 + 광고비 추세 <span class="muted" style="font-size:11px;font-weight:400">(녹색 누적 = 매출 / 회색 점선 = 광고비, dual-axis)</span></h3>
+  <div class="chart-wrap tall"><canvas id="revChart"></canvas></div>
 </section>
 
 <section>
@@ -1397,7 +1397,7 @@
   옵티마이저 target 350% 는 구매완료 기준.
   <br><br>
   <code>data: chair_market.db</code> · 자동 발행 매일 08:00 KST ·
-  생성 시각 2026-04-29 14:51:51
+  생성 시각 2026-04-29 14:54:50
 </footer>
 
 </div>
@@ -1432,19 +1432,111 @@ new Chart(document.getElementById('roasChart'), {
   }
 });
 
+// 매출 차트 — 구매완료(진한 녹색) + 장바구니 추가분(옅은 녹색) stacked + 광고비(회색 점선, dual-axis)
+//  · stacked bar = 매출 구성 한눈에 (구매와 카트 비중 직관적)
+//  · 7일 이동평균 라인으로 추세 강조 (변동성 큰 일별 vs 부드러운 추세)
+const REV_CART_ONLY = REV_TOTAL.map((t, i) => Math.max(0, t - REV_PURCH[i]));
+function _movingAvg(arr, window) {
+  const out = [];
+  for (let i = 0; i < arr.length; i++) {
+    const lo = Math.max(0, i - window + 1);
+    const slice = arr.slice(lo, i + 1).filter(v => v !== null && v !== undefined);
+    out.push(slice.length ? slice.reduce((a, b) => a + b, 0) / slice.length : null);
+  }
+  return out;
+}
+const REV_PURCH_MA7 = _movingAvg(REV_PURCH, 7);
+const COST_MA7 = _movingAvg(KPI_COST, 7);
+
+const _wonFmt = v => {
+  const a = Math.abs(v || 0);
+  if (a >= 1_000_000) return '₩' + (v/1_000_000).toFixed(2) + 'M';
+  if (a >= 1_000) return '₩' + (v/1_000).toFixed(0) + 'K';
+  return '₩' + (v||0).toLocaleString();
+};
+
 new Chart(document.getElementById('revChart'), {
   type: 'bar',
   data: {
     labels: ROAS_DATES,
     datasets: [
-      { label: '광고비', data: KPI_COST, backgroundColor: '#cbd5e144', borderColor: '#94a3b8', borderWidth: 1 },
-      { label: '총 매출 (구매+장바구니)', data: REV_TOTAL, backgroundColor: '#2563eb44', borderColor: '#2563eb', borderWidth: 1 },
-      { label: '구매완료 매출', data: REV_PURCH, backgroundColor: '#16a34a44', borderColor: '#16a34a', borderWidth: 1 }
+      {
+        type: 'bar', label: '구매완료 매출 (실 매출)',
+        data: REV_PURCH,
+        backgroundColor: '#16a34a',
+        borderColor: '#15803d', borderWidth: 1,
+        stack: 'revenue',
+        order: 2,
+      },
+      {
+        type: 'bar', label: '장바구니 추가 매출 (구매 외 전환)',
+        data: REV_CART_ONLY,
+        backgroundColor: '#bbf7d0',
+        borderColor: '#86efac', borderWidth: 1,
+        stack: 'revenue',
+        order: 3,
+      },
+      {
+        type: 'line', label: '구매 매출 7일 이동평균',
+        data: REV_PURCH_MA7,
+        borderColor: '#15803d', backgroundColor: 'transparent',
+        borderWidth: 2.5, tension: 0.3, pointRadius: 0,
+        yAxisID: 'y',
+        order: 1,
+      },
+      {
+        type: 'line', label: '광고비 (dual-axis)',
+        data: KPI_COST,
+        borderColor: '#94a3b8', backgroundColor: 'transparent',
+        borderWidth: 1.2, borderDash: [3, 3], tension: 0.25, pointRadius: 1.5,
+        yAxisID: 'y1',
+        order: 0,
+      },
+      {
+        type: 'line', label: '광고비 7일 이동평균',
+        data: COST_MA7,
+        borderColor: '#475569', backgroundColor: 'transparent',
+        borderWidth: 1.5, tension: 0.3, pointRadius: 0,
+        yAxisID: 'y1',
+        order: 0,
+      },
     ]
   },
-  options: { responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { position: 'bottom' } },
-    scales: { y: { beginAtZero: true, ticks: { callback: v => '₩' + (v/1000).toFixed(0) + 'K' } } }
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 14 } },
+      tooltip: {
+        mode: 'index', intersect: false,
+        callbacks: {
+          label: ctx => ctx.dataset.label + ': ' + _wonFmt(ctx.parsed.y),
+          afterBody: items => {
+            // 일별 총 매출 = 구매 + 카트 합계 한 줄 추가
+            const i = items[0].dataIndex;
+            const total = (REV_PURCH[i] || 0) + (REV_CART_ONLY[i] || 0);
+            const cost = KPI_COST[i] || 0;
+            const roas = cost ? (total/cost*100).toFixed(0) : '—';
+            return ['', `총 매출 ${_wonFmt(total)} · 광고비 ${_wonFmt(cost)} · 총 ROAS ${roas}%`];
+          }
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } },
+      y: {
+        stacked: true, beginAtZero: true, position: 'left',
+        title: { display: true, text: '매출 (구매 + 장바구니 누적)', font: { size: 11 } },
+        ticks: { callback: v => _wonFmt(v) },
+        grid: { color: 'rgba(0,0,0,0.05)' },
+      },
+      y1: {
+        beginAtZero: true, position: 'right',
+        title: { display: true, text: '광고비', font: { size: 11 } },
+        ticks: { callback: v => _wonFmt(v) },
+        grid: { drawOnChartArea: false },
+      }
+    },
+    interaction: { mode: 'nearest', axis: 'x', intersect: false },
   }
 });
 
