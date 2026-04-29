@@ -106,6 +106,13 @@
   .rc-diagnosis { font-weight: 600; margin: 4px 0 6px 0; padding: 6px 10px;
     background: rgba(255,255,255,0.6); border-radius: 4px; font-size: 12.5px; }
 
+  /* 캠페인 타입 × 디바이스 분리 카드 */
+  .td-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 12px; margin-bottom: 14px; }
+  .td-card { padding: 12px 14px; border-radius: 6px; background: #fff; border: 1px solid var(--border); }
+  .td-card h4 { margin: 0 0 4px 0; font-size: 13.5px; }
+  .td-diagnosis { font-weight: 600; font-size: 12px; margin-bottom: 8px;
+    padding: 5px 10px; background: rgba(0,0,0,0.03); border-radius: 3px; }
+
   /* 캠페인 타입별 카드 */
   .type-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 12px; margin-bottom: 14px; }
   .type-card { padding: 12px 14px; border-radius: 6px; }
@@ -419,6 +426,219 @@
                   <td class='num'>₩89,750</td>
                   <td class='num'>₩154,612</td>
                   <td class='num'>-42.0%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+
+  <h3>📱💻 캠페인 타입 × 디바이스 분리 — MO/PC 항상 분리</h3>
+  <div style="background:#eff6ff;border-left:3px solid #2563eb;padding:8px 12px;border-radius:4px;margin-bottom:10px;font-size:12px">
+    🚨 <strong>사용자 명시 2026-04-29</strong>: 모바일과 PC 는 generic vs brand 처럼 항상 분리.
+    CPC 1.5~3배 차이 + CVR 패턴 다름 → 합산하면 디바이스별 정반대 패턴 가려짐.
+    <span class='dev-badge dev-mo'>📱 MO</span> 모바일 / <span class='dev-badge dev-pc'>💻 PC</span> PC / 🔀 MIXED 통합 운영.
+    [[rules_device_split_analysis]]
+  </div>
+  <div class="td-cards">
+        <div class="td-card" style="border-left:4px solid #2563eb">
+          <h4>🛒 SHOPPING <span class='dev-badge dev-mo'>📱 MO</span></h4>
+          <div class="td-diagnosis" style="color:#7c3aed">🔍 유입 ↑ but 매출 ↓ — 후단(UX/가격) 문제</div>
+          <table class="bh-mini">
+            <thead><tr><th>지표</th><th class='num'>7d 평균</th><th class='num'>이전 23d</th><th class='num'>변화</th></tr></thead>
+            <tbody>
+              <tr><td>광고비/일</td>
+                <td class='num'>₩90,084</td>
+                <td class='num'>₩76,873</td>
+                <td class='num'><span class="b-up">+17%</span></td></tr>
+              <tr><td>노출/일</td>
+                <td class='num'>10,261</td>
+                <td class='num'>2,581</td>
+                <td class='num'><span class="b-up">+298%</span></td></tr>
+              <tr><td>클릭/일 (유입)</td>
+                <td class='num'>38</td>
+                <td class='num'>26</td>
+                <td class='num'><span class="b-up">+46%</span></td></tr>
+              <tr><td>구매수/일</td>
+                <td class='num'>0.3</td>
+                <td class='num'>—</td>
+                <td class='num'><span class="b-dn">-61%</span></td></tr>
+              <tr class='hi'><td style='color:#16a34a'>구매 ROAS</td>
+                <td class='num' style='color:#16a34a'>76%</td>
+                <td class='num'>206%</td>
+                <td class='num'><span class="b-dn">-130pt</span></td></tr>
+              <tr><td style='color:#94a3b8'>총 ROAS</td>
+                <td class='num muted'>481%</td>
+                <td class='num'>779%</td>
+                <td class='num'><span class="b-dn">-297pt</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="td-card" style="border-left:4px solid #6b7280">
+          <h4>🛒 SHOPPING <span class='dev-badge dev-mixed'>🔀 MIXED</span></h4>
+          <div class="td-diagnosis" style="color:#7c3aed">🔍 유입 ↑ but 매출 ↓ — 후단(UX/가격) 문제</div>
+          <table class="bh-mini">
+            <thead><tr><th>지표</th><th class='num'>7d 평균</th><th class='num'>이전 23d</th><th class='num'>변화</th></tr></thead>
+            <tbody>
+              <tr><td>광고비/일</td>
+                <td class='num'>₩35,416</td>
+                <td class='num'>₩33,981</td>
+                <td class='num'><span class="b-flat">+4%</span></td></tr>
+              <tr><td>노출/일</td>
+                <td class='num'>5,498</td>
+                <td class='num'>1,802</td>
+                <td class='num'><span class="b-up">+205%</span></td></tr>
+              <tr><td>클릭/일 (유입)</td>
+                <td class='num'>24</td>
+                <td class='num'>19</td>
+                <td class='num'><span class="b-up">+28%</span></td></tr>
+              <tr><td>구매수/일</td>
+                <td class='num'>0.4</td>
+                <td class='num'>—</td>
+                <td class='num'><span class="b-dn">-48%</span></td></tr>
+              <tr class='hi'><td style='color:#16a34a'>구매 ROAS</td>
+                <td class='num' style='color:#16a34a'>41%</td>
+                <td class='num'>326%</td>
+                <td class='num'><span class="b-dn">-286pt</span></td></tr>
+              <tr><td style='color:#94a3b8'>총 ROAS</td>
+                <td class='num muted'>169%</td>
+                <td class='num'>958%</td>
+                <td class='num'><span class="b-dn">-789pt</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="td-card" style="border-left:4px solid #6b7280">
+          <h4>🔍 WEB_SITE <span class='dev-badge dev-mixed'>🔀 MIXED</span></h4>
+          <div class="td-diagnosis" style="color:#7c3aed">🔍 유입 ↑ but 매출 ↓ — 후단(UX/가격) 문제</div>
+          <table class="bh-mini">
+            <thead><tr><th>지표</th><th class='num'>7d 평균</th><th class='num'>이전 23d</th><th class='num'>변화</th></tr></thead>
+            <tbody>
+              <tr><td>광고비/일</td>
+                <td class='num'>₩28,001</td>
+                <td class='num'>₩4,100</td>
+                <td class='num'><span class="b-up">+583%</span></td></tr>
+              <tr><td>노출/일</td>
+                <td class='num'>1,210</td>
+                <td class='num'>536</td>
+                <td class='num'><span class="b-up">+126%</span></td></tr>
+              <tr><td>클릭/일 (유입)</td>
+                <td class='num'>28</td>
+                <td class='num'>8</td>
+                <td class='num'><span class="b-up">+250%</span></td></tr>
+              <tr><td>구매수/일</td>
+                <td class='num'>0.3</td>
+                <td class='num'>—</td>
+                <td class='num'><span class="b-up">+64%</span></td></tr>
+              <tr class='hi'><td style='color:#16a34a'>구매 ROAS</td>
+                <td class='num' style='color:#16a34a'>36%</td>
+                <td class='num'>144%</td>
+                <td class='num'><span class="b-dn">-109pt</span></td></tr>
+              <tr><td style='color:#94a3b8'>총 ROAS</td>
+                <td class='num muted'>158%</td>
+                <td class='num'>652%</td>
+                <td class='num'><span class="b-dn">-494pt</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="td-card" style="border-left:4px solid #ea580c">
+          <h4>🛒 SHOPPING <span class='dev-badge dev-pc'>💻 PC</span></h4>
+          <div class="td-diagnosis" style="color:#16a34a">✅ ROAS 향상</div>
+          <table class="bh-mini">
+            <thead><tr><th>지표</th><th class='num'>7d 평균</th><th class='num'>이전 23d</th><th class='num'>변화</th></tr></thead>
+            <tbody>
+              <tr><td>광고비/일</td>
+                <td class='num'>₩14,074</td>
+                <td class='num'>₩17,041</td>
+                <td class='num'><span class="b-dn">-17%</span></td></tr>
+              <tr><td>노출/일</td>
+                <td class='num'>3,397</td>
+                <td class='num'>478</td>
+                <td class='num'><span class="b-up">+611%</span></td></tr>
+              <tr><td>클릭/일 (유입)</td>
+                <td class='num'>4</td>
+                <td class='num'>4</td>
+                <td class='num'><span class="b-up">+17%</span></td></tr>
+              <tr><td>구매수/일</td>
+                <td class='num'>0.1</td>
+                <td class='num'>—</td>
+                <td class='num'><span class="b-up">+64%</span></td></tr>
+              <tr class='hi'><td style='color:#16a34a'>구매 ROAS</td>
+                <td class='num' style='color:#16a34a'>383%</td>
+                <td class='num'>193%</td>
+                <td class='num'><span class="b-up">+190pt</span></td></tr>
+              <tr><td style='color:#94a3b8'>총 ROAS</td>
+                <td class='num muted'>474%</td>
+                <td class='num'>699%</td>
+                <td class='num'><span class="b-dn">-225pt</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="td-card" style="border-left:4px solid #2563eb">
+          <h4>🔍 WEB_SITE <span class='dev-badge dev-mo'>📱 MO</span></h4>
+          <div class="td-diagnosis" style="color:#16a34a">✅ ROAS 향상</div>
+          <table class="bh-mini">
+            <thead><tr><th>지표</th><th class='num'>7d 평균</th><th class='num'>이전 23d</th><th class='num'>변화</th></tr></thead>
+            <tbody>
+              <tr><td>광고비/일</td>
+                <td class='num'>₩553</td>
+                <td class='num'>₩162,722</td>
+                <td class='num'><span class="b-dn">-100%</span></td></tr>
+              <tr><td>노출/일</td>
+                <td class='num'>43</td>
+                <td class='num'>3,451</td>
+                <td class='num'><span class="b-dn">-99%</span></td></tr>
+              <tr><td>클릭/일 (유입)</td>
+                <td class='num'>7</td>
+                <td class='num'>143</td>
+                <td class='num'><span class="b-dn">-95%</span></td></tr>
+              <tr><td>구매수/일</td>
+                <td class='num'>4.0</td>
+                <td class='num'>—</td>
+                <td class='num'><span class="b-flat">-9%</span></td></tr>
+              <tr class='hi'><td style='color:#16a34a'>구매 ROAS</td>
+                <td class='num' style='color:#16a34a'>96623%</td>
+                <td class='num'>465%</td>
+                <td class='num'><span class="b-up">+96158pt</span></td></tr>
+              <tr><td style='color:#94a3b8'>총 ROAS</td>
+                <td class='num muted'>47741%</td>
+                <td class='num'>1480%</td>
+                <td class='num'><span class="b-up">+46261pt</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="td-card" style="border-left:4px solid #ea580c">
+          <h4>🔍 WEB_SITE <span class='dev-badge dev-pc'>💻 PC</span></h4>
+          <div class="td-diagnosis" style="color:#16a34a">✅ ROAS 향상</div>
+          <table class="bh-mini">
+            <thead><tr><th>지표</th><th class='num'>7d 평균</th><th class='num'>이전 23d</th><th class='num'>변화</th></tr></thead>
+            <tbody>
+              <tr><td>광고비/일</td>
+                <td class='num'>₩201</td>
+                <td class='num'>₩18,069</td>
+                <td class='num'><span class="b-dn">-99%</span></td></tr>
+              <tr><td>노출/일</td>
+                <td class='num'>25</td>
+                <td class='num'>1,271</td>
+                <td class='num'><span class="b-dn">-98%</span></td></tr>
+              <tr><td>클릭/일 (유입)</td>
+                <td class='num'>3</td>
+                <td class='num'>14</td>
+                <td class='num'><span class="b-dn">-79%</span></td></tr>
+              <tr><td>구매수/일</td>
+                <td class='num'>0.3</td>
+                <td class='num'>—</td>
+                <td class='num'><span class="b-dn">-45%</span></td></tr>
+              <tr class='hi'><td style='color:#16a34a'>구매 ROAS</td>
+                <td class='num' style='color:#16a34a'>9922%</td>
+                <td class='num'>980%</td>
+                <td class='num'><span class="b-up">+8942pt</span></td></tr>
+              <tr><td style='color:#94a3b8'>총 ROAS</td>
+                <td class='num muted'>0%</td>
+                <td class='num'>2680%</td>
+                <td class='num'><span class="b-dn">-2680pt</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -1864,7 +2084,7 @@
   옵티마이저 target 350% 는 구매완료 기준.
   <br><br>
   <code>data: chair_market.db</code> · 자동 발행 매일 08:00 KST ·
-  생성 시각 2026-04-29 17:20:29
+  생성 시각 2026-04-29 17:26:39
 </footer>
 
 </div>
