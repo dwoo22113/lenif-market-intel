@@ -83,6 +83,27 @@
   /* share bar */
   .share-table .bar { background: #2563eb; height: 16px; border-radius: 2px; }
 
+  /* 🔬 매출 하락 원인 분석 */
+  .rc-banner { background: linear-gradient(to right, #fee2e2, #fef3c7);
+    border: 1.5px solid #dc2626; border-radius: 8px; padding: 14px 18px; margin-bottom: 14px;
+    font-size: 14px; font-weight: 600; color: #7f1d1d; }
+  .rc-banner.stable { background: linear-gradient(to right, #dcfce7, #f0fdf4);
+    border-color: #16a34a; color: #14532d; }
+  .rc-fact { padding: 12px 14px; border-radius: 6px; margin-bottom: 10px; }
+  .rc-fact-title { font-weight: 700; margin-bottom: 6px; font-size: 14px; }
+  .rc-fact ul { margin: 4px 0 6px 0; padding-left: 18px; font-size: 13px; }
+  .rc-fact .small { font-size: 11.5px; }
+  .rc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .rc-hyp { padding: 10px 14px; border-radius: 6px; }
+  .rc-hyp-title { font-weight: 600; margin-bottom: 6px; font-size: 13px; display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; }
+  .rc-hyp ul { margin: 4px 0; padding-left: 18px; font-size: 12.5px; }
+  .rc-verdict { font-size: 11px; font-family: monospace; padding: 2px 6px; border-radius: 3px;
+    background: rgba(0,0,0,0.06); }
+  .rc-action { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; margin-bottom: 8px; }
+  .rc-action-prio { font-weight: 700; font-size: 13.5px; margin-bottom: 4px; }
+  .rc-action-rat { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .rc-action ul { margin: 4px 0; padding-left: 18px; font-size: 12.5px; }
+
   /* 🏷️ 브랜드 점유율 표 */
   .brand-table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .brand-table th, .brand-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); text-align: left; }
@@ -172,6 +193,75 @@
   <h1>🪑 의자 시장 인텔리전스</h1>
   <div class="meta">발행 2026-04-29 (수) · 데이터 기준 2026-04-28 (화) · 매일 08:00 KST 자동 갱신</div>
 </header>
+
+<section>
+  <h2>🔬 매출 하락 원인 분석 보고서 — 데이터 기반 가설 검증</h2>
+  <div class="rc-banner">
+    매출 하락 주 원인: D (7d 구매 매출 -27% / 구매 ROAS -120pt)
+  </div>
+  
+      <div class="rc-fact" style="border-left:4px solid #dc2626;background:#fef2f2">
+        <div class="rc-fact-title">🚨 📉 매출 하락 사실 확인
+          <span class="rc-verdict">confirmed</span></div>
+        <ul><li>7일 평균 구매 매출 ₩909,629 vs 30일 평균 ₩1,250,985 (-27.3%)</li><li>7일 평균 구매 ROAS 242% vs 30일 평균 362% (-120pt)</li><li>7일 평균 구매 횟수 6.4회/일 vs 30일 평균 6.8회/일 (-5.9%)</li></ul>
+        <div class="muted small">lookback 20일 잠복기로 D-1~D-7 구매 ROAS 는 underestimate. D-21 이후 성숙.</div>
+      </div>
+    
+
+  <h3>🧪 가설 검증 (5개)</h3>
+  <p class="muted" style="font-size:11.5px">각 가설은 30일 자사 KPI · 데이터랩 시장 트렌드 · RelKwdStat 검색량 데이터로 검증. <strong>verdict</strong>: supported(증거 강함) / weak_evidence / rejected(반증) / evaluation_pending(데이터 부족).</p>
+  <div class="rc-grid">
+          <div class="rc-hyp" style="border-left:4px solid #16a34a;background:#f0fdf4">
+            <div class="rc-hyp-title">✅ 🪑 가설 A: 시장 수요 하락
+              <span class="rc-verdict" style="color:#16a34a">rejected · conf=high</span>
+            </div>
+            <ul><li>시장 카테고리 트렌드 7d/30d 변화율: +2.9% (데이터랩 0-100 정규화 기준)</li></ul>
+          </div>
+        
+          <div class="rc-hyp" style="border-left:4px solid #16a34a;background:#f0fdf4">
+            <div class="rc-hyp-title">✅ ⚔️ 가설 B: 경쟁사 검색 트렌드 강세
+              <span class="rc-verdict" style="color:#16a34a">rejected · conf=high</span>
+            </div>
+            <ul><li>시디즈 시리즈 7d/30d -3.6%</li><li>동급 경쟁 7d/30d -2.5%</li></ul>
+          </div>
+        
+          <div class="rc-hyp" style="border-left:4px solid #ea580c;background:#fff7ed">
+            <div class="rc-hyp-title">⚠️ 🏠 가설 C: 자사 브랜드/제품 인지도 하락
+              <span class="rc-verdict" style="color:#ea580c">weak_evidence · conf=medium</span>
+            </div>
+            <ul><li>자사 (레니프) 그룹 7d/30d +0.0%</li><li>라인업 5 키워드 7d 변화: 유니백체어 프로 -21%, 유니백체어 +28%, 레니프 -6%, 바른설계 +0%, 폴드핏체어 +0%</li><li>하락 ≥10% 키워드 수: 1/5</li></ul>
+          </div>
+        
+          <div class="rc-hyp" style="border-left:4px solid #dc2626;background:#fef2f2">
+            <div class="rc-hyp-title">🚨 🎯 가설 D: 광고 운영 효율 저하
+              <span class="rc-verdict" style="color:#dc2626">supported · conf=high</span>
+            </div>
+            <ul><li>CTR 7d/30d 1.10% vs 1.35% (-18.8%)</li><li>CPC 7d/30d ₩1556 vs ₩1248 (+24.7%)</li><li>CVR 7d/30d 2.69% vs 2.51% (+7.3%)</li><li>클릭 7d/30d 239 vs 284 (-15.9%)</li><li>광고비 7d/30d ₩373,185 vs ₩346,951 (+7.6%)</li></ul>
+          </div>
+        
+          <div class="rc-hyp" style="border-left:4px solid #6b7280;background:#f8fafc">
+            <div class="rc-hyp-title">⏳ 💰 가설 E: 경쟁사 가격 인하
+              <span class="rc-verdict" style="color:#6b7280">evaluation_pending · conf=n/a</span>
+            </div>
+            <ul><li>가격 시계열 데이터 1일치만 누적됨 (의미 있는 추이 진단은 7일+ 필요)</li></ul>
+          </div>
+        </div>
+
+  <h3>💡 데이터 기반 액션 추천 (우선순위순)</h3>
+  
+          <div class="rc-action">
+            <div class="rc-action-prio">🔴 P0 광고 운영 효율 회복 — CTR/CPC/CVR 진단</div>
+            <div class="rc-action-rat">근거: CTR -19% / CPC +25% / CVR +7% / 클릭 -16%. 입찰 환경 악화 + 소재 피로 의심. CPC 가 평균 대비 ₩+308 상승.</div>
+            <ul><li>CPC 급등 시점(4/22 전후) 캠페인별 입찰가 변동 audit — naver_ads.db 의 daily_stats 검토</li><li>CTR 가장 낮은 광고그룹·소재 식별 → 신규 소재 A/B 테스트 시작</li><li>CVR 변동성 큰 키워드 정리 (저전환 키워드 입찰 -20%)</li></ul>
+          </div>
+        
+          <div class="rc-action">
+            <div class="rc-action-prio">⚪ P3 경쟁사 가격 시계열 7일+ 누적 후 재평가</div>
+            <div class="rc-action-rat">근거: 현재 가격 데이터 1일치만 누적. 7일+ 후 의미 있는 비교 가능.</div>
+            <ul><li>automation 그대로 유지 — 매일 4 모델 본체 가격 자동 누적 중</li><li>7일 후 재분석에서 세일 패턴 식별</li></ul>
+          </div>
+        
+</section>
 
 <section>
   <h2>🎯 자사 광고 KPI — 듀얼 ROAS</h2>
@@ -695,7 +785,7 @@
   옵티마이저 target 350% 는 구매완료 기준.
   <br><br>
   <code>data: chair_market.db</code> · 자동 발행 매일 08:00 KST ·
-  생성 시각 2026-04-29 13:21:46
+  생성 시각 2026-04-29 13:30:25
 </footer>
 
 </div>
