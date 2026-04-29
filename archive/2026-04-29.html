@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>의자 시장 인텔리전스 — 2026-04-29</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #fafafa; --card: #ffffff; --text: #1a1a1a; --muted: #6b7280;
+    --border: #e5e7eb; --accent-total: #2563eb; --accent-purchase: #16a34a;
+    --warn: #ea580c; --pass: #16a34a; --fail: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px;
+    font-family: -apple-system, "Pretendard", "Apple SD Gothic Neo", sans-serif;
+    background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.55; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+  header h1 { margin: 0 0 4px 0; font-size: 24px; }
+  header .meta { color: var(--muted); font-size: 13px; }
+
+  section { background: var(--card); border-radius: 8px; padding: 20px;
+    margin-bottom: 16px; border: 1px solid var(--border); }
+  section h2 { margin: 0 0 16px 0; font-size: 17px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  section h3 { margin: 16px 0 8px 0; font-size: 14px; }
+  .muted { color: var(--muted); }
+  code { background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-size: 12.5px; }
+
+  /* 듀얼 ROAS 카드 */
+  .roas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .roas-card { border-radius: 8px; padding: 18px; text-align: center; }
+  .roas-card.total { background: #eff6ff; border: 1px solid #bfdbfe; }
+  .roas-card.purchase { background: #f0fdf4; border: 1px solid #bbf7d0; }
+  .roas-card.purchase.fail { background: #fef2f2; border: 1px solid #fecaca; }
+  .roas-card .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .roas-card .value { font-size: 36px; font-weight: 700; margin: 6px 0; }
+  .roas-card .sub { font-size: 12.5px; color: var(--muted); }
+  .roas-card.total .value { color: var(--accent-total); }
+  .roas-card.purchase .value { color: var(--accent-purchase); }
+  .roas-card.purchase.fail .value { color: var(--fail); }
+
+  /* 패턴 진단 박스 */
+  .pattern-box { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .pattern-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 12px; }
+  .pattern-card .pl { font-size: 12px; color: var(--muted); }
+  .pattern-card .pn { font-size: 15px; font-weight: 600; margin: 4px 0; }
+  .pattern-card .pg { font-size: 12.5px; }
+
+  .kpi-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 13px; }
+  .kpi-table th, .kpi-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+  .kpi-table th { background: #f8fafc; font-weight: 600; color: var(--muted); font-size: 12px; }
+  .kpi-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* 인사이트 */
+  .insights { background: #fefce8; border-left: 3px solid #facc15; padding: 12px 16px; border-radius: 4px; }
+  .insights ul { margin: 0; padding-left: 18px; }
+  .insights li { margin: 4px 0; }
+
+  .interp { background: #eff6ff; border-left: 3px solid #2563eb; padding: 12px 16px; border-radius: 4px; }
+  .interp ul { margin: 0; padding-left: 18px; }
+  .interp li { margin: 4px 0; }
+
+  /* 그룹 해설 */
+  .group-helps { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 10px; }
+  .group-help { background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-size: 12.5px; }
+  .group-help-title { font-weight: 700; margin-bottom: 4px; font-size: 13px; }
+  .group-help-desc { color: var(--muted); }
+
+  /* 차트 */
+  .chart-wrap { position: relative; height: 320px; margin-top: 8px; }
+  .chart-wrap.tall { height: 400px; }
+
+  /* 검색량 표 */
+  .topkw-table, .comp-table, .share-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .topkw-table th, .topkw-table td,
+  .comp-table th, .comp-table td,
+  .share-table th, .share-table td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+  .topkw-table th, .comp-table th, .share-table th { background: #f8fafc; font-weight: 600; }
+  .topkw-table td.num, .comp-table td.num, .share-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .comp-table td.small { font-size: 11px; color: var(--muted); }
+
+  /* share bar */
+  .share-table .bar { background: #2563eb; height: 16px; border-radius: 2px; }
+
+  /* 콘텐츠 카드 */
+  .content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; }
+  .content-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 12px; }
+  .content-card h3 { margin: 0 0 6px 0; font-size: 14px; }
+  .content-stats { font-size: 12.5px; margin-bottom: 8px; }
+  .content-card .big-num { font-size: 22px; font-weight: 700; color: var(--accent-total); margin-right: 4px; }
+  .content-card .ch-split { color: var(--muted); margin-left: 8px; font-size: 11.5px; }
+  .content-card .delta { float: right; font-size: 12px; color: var(--muted); }
+  .content-card ul.samples { margin: 6px 0 0 0; padding-left: 14px; font-size: 12px; }
+  .content-card ul.samples li { margin: 3px 0; }
+  .content-card ul.samples a { color: var(--accent-total); text-decoration: none; }
+  .content-card ul.samples a:hover { text-decoration: underline; }
+  .content-card .meta { color: var(--muted); font-size: 11px; }
+
+  footer { margin-top: 24px; padding: 16px; background: #f1f5f9; border-radius: 6px; font-size: 12px; color: var(--muted); }
+  footer code { font-size: 11px; }
+
+  @media (max-width: 720px) {
+    body { padding: 12px; }
+    .roas-grid, .pattern-box { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>🪑 의자 시장 인텔리전스</h1>
+  <div class="meta">발행 2026-04-29 (수) · 데이터 기준 2026-04-28 (화) · 매일 08:00 KST 자동 갱신</div>
+</header>
+
+<section>
+  <h2>🎯 자사 광고 KPI — 듀얼 ROAS</h2>
+  <div class="roas-grid">
+    <div class="roas-card total">
+      <div class="label">총 ROAS · 구매 + 장바구니</div>
+      <div class="value">512.4%</div>
+      <div class="sub">총 매출 ₩2.08M · 11 전환</div>
+    </div>
+    <div class="roas-card purchase fail">
+      <div class="label">구매완료 ROAS · 실 매출 ⚠️</div>
+      <div class="value">72.8%</div>
+      <div class="sub">목표 350% · 구매 매출 ₩296K · 3 구매</div>
+    </div>
+  </div>
+
+  <div class="pattern-box">
+    <div class="pattern-card">
+      <div class="pl">어제 패턴 진단</div>
+      <div class="pn">🛒 Cart-only 거품</div>
+      <div class="pg">카트만 누적, 실 결제 X · bid -25% / 키워드 재검토</div>
+    </div>
+    <div class="pattern-card">
+      <div class="pl">30일 평균 패턴 진단</div>
+      <div class="pn">✅ 정상 흑자</div>
+      <div class="pg">유지·확대</div>
+    </div>
+  </div>
+
+  <table class="kpi-table">
+    <thead><tr><th>구간</th><th class='num'>광고비</th><th class='num'>총 ROAS</th><th class='num'>구매완료 ROAS</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>어제 (2026-04-28)</td><td class='num'>₩406K</td>
+        <td class='num'>512.4%</td><td class='num'>72.8%</td>
+        <td>D-1 lookback 잠복기</td></tr>
+      <tr><td>7일 평균</td><td class='num'>₩373K</td>
+        <td class='num'>727.9%</td>
+        <td class='num'>242.2%</td>
+        <td>최근 추세</td></tr>
+      <tr><td>30일 평균</td><td class='num'>₩347K</td>
+        <td class='num'>1057.2%</td>
+        <td class='num'>362.1%</td>
+        <td>장기 베이스라인</td></tr>
+    </tbody>
+  </table>
+  <p class="muted" style="margin-top:8px;font-size:12px">⚠️ "총 ROAS" = LENIF 추적 시점 기준 = 구매 + 장바구니 합산. "구매완료 ROAS" 만이 실제 매출. lookback 20일 → D-1 underestimate, D-21 이후 성숙 (rules_roas_dual_display.md).</p>
+</section>
+
+<section>
+  <h2>🔬 추세 자동 해석</h2>
+  <div class="interp">
+    <strong>📈 시장·경쟁사 트렌드 (데이터랩 30일)</strong>
+    <ul><li>⚔️ 동급 경쟁 (사이즈오브체어·클라우드백·마이사이즈체어·듀오백): 안정 (어제·7일·30일 모두 ±15% 이내)</li><li>동일세그먼트: 안정 (어제·7일·30일 모두 ±15% 이내)</li><li>레니프: 안정 (어제·7일·30일 모두 ±15% 이내)</li><li>시디즈: 안정 (어제·7일·30일 모두 ±15% 이내)</li><li>🪖 시디즈 시리즈 (T60·T50·T20·GX·모브): 안정 (어제·7일·30일 모두 ±15% 이내)</li><li>🪑 시장 카테고리 (의자 일반 검색): 안정 (어제·7일·30일 모두 ±15% 이내)</li><li>🏠 자사 (레니프·유니백체어): 안정 (어제·7일·30일 모두 ±15% 이내)</li><li>카테고리: 안정 (어제·7일·30일 모두 ±15% 이내)</li><li>👑 프리미엄 (허먼밀러·스틸케이스): 안정 (어제·7일·30일 모두 ±15% 이내)</li></ul>
+  </div>
+  <h3 style="margin-top:18px">🎯 자사 광고 KPI 추세</h3>
+  <div class="insights"><ul><li>⚠️ 어제 구매완료 ROAS 73% → 7일 평균 242% 대비 -70%. D-1은 lookback 20일 잠복기 영향, D-21 이후 성숙.</li><li>📉 30일 구매완료 ROAS 추세 하락 (기울기 -7.3pt/일)</li><li>✅ 30일 평균 구매완료 ROAS 362% ≥ target 350%</li><li>🛒 30일 총 ROAS 1057% vs 구매완료 362% — 장바구니가 총 전환의 약 66% 차지 (2.9배 격차)</li><li>🩺 어제 패턴: 🛒 Cart-only 거품 → 카트만 누적, 실 결제 X · bid -25% / 키워드 재검토</li></ul></div>
+</section>
+
+<section>
+  <h2>📚 그룹이 무엇인가?</h2>
+  <div class="group-helps"><div class="group-help"><div class="group-help-title">🪑 시장 카테고리 (의자 일반 검색)</div><div class="group-help-desc">사무용·인체공학·게이밍 등 의자 카테고리 전반. 시장 수요·시즌·관심도의 베이스라인.</div></div><div class="group-help"><div class="group-help-title">🏠 자사 (레니프·유니백체어)</div><div class="group-help-desc">레니프 브랜드명 + 유니백체어 프로/베이직 + 후기·가격 등 브랜드 검색. 인지도·관심도 변화 측정.</div></div><div class="group-help"><div class="group-help-title">🪖 시디즈 시리즈 (T60·T50·T20·GX·모브)</div><div class="group-help-desc">국내 의자 점유율 1위 시디즈의 주요 모델. T60(상)·T50(중상)·T20(중)·GX(보급)·모브(가정). 자사 업그레이드 경로 후보군.</div></div><div class="group-help"><div class="group-help-title">⚔️ 동급 경쟁 (사이즈오브체어·클라우드백·마이사이즈체어·듀오백)</div><div class="group-help-desc">유니백체어 프로와 동일 가격대(50-100만원)·동일 USP(인체공학·메쉬) 직접 경쟁군. 검색량·콘텐츠 점유 변화 = 직접적 위협 시그널.</div></div><div class="group-help"><div class="group-help-title">👑 프리미엄 (허먼밀러·스틸케이스)</div><div class="group-help-desc">허먼밀러 에어론·임바디·스틸케이스 등 상위 (200만원+) 시장. 자사 직접 경쟁은 아니지만 프리미엄 의자 인지·교양 트렌드 reference.</div></div></div>
+</section>
+
+<section>
+  <h2>📊 자사 광고 KPI 30일 추세</h2>
+  <div class="chart-wrap"><canvas id="roasChart"></canvas></div>
+  <h3>일별 매출·비용</h3>
+  <div class="chart-wrap"><canvas id="revChart"></canvas></div>
+</section>
+
+<section>
+  <h2>📈 시장·경쟁사 트렌드 30일 (데이터랩)</h2>
+  <div class="chart-wrap tall"><canvas id="trendChart"></canvas></div>
+  <h3>spike 탐지 (7일 평균 대비 ±30% / z≥2)</h3>
+  <p class="muted">7일 평균 대비 의미 있는 spike 없음 (정상 범위)</p>
+</section>
+
+<section>
+  <h2>⚔️ 경쟁사 단위 비교 (RelKwdStat 월 검색량 + 24h 콘텐츠 언급)</h2>
+
+  <h3>🏠 자사 라인업</h3>
+  
+    <table class="comp-table">
+      <thead><tr><th>모델/브랜드</th><th class='num'>월 검색량</th><th class='num'>PC</th><th class='num'>MO</th><th>경쟁도</th><th class='num'>24h 언급</th><th>채널</th></tr></thead>
+      <tbody><tr><td><strong>유니백체어프로</strong></td><td class='num'>500</td><td class='num'>220</td><td class='num'>280</td><td>중간</td><td class='num'>46</td><td class='num small'>B30/C8/S8</td></tr><tr><td><strong>유니백체어</strong></td><td class='num'>340</td><td class='num'>110</td><td class='num'>230</td><td>중간</td><td class='num'>0</td><td class='num small'>B0/C0/S0</td></tr><tr><td><strong>레니프</strong></td><td class='num'>310</td><td class='num'>120</td><td class='num'>190</td><td>낮음</td><td class='num'>83</td><td class='num small'>B28/C29/S26</td></tr><tr><td><strong>유니백체어베이직</strong></td><td class='num'>0</td><td class='num'>0</td><td class='num'>0</td><td></td><td class='num'>0</td><td class='num small'>B0/C0/S0</td></tr></tbody>
+    </table>
+    
+
+  <h3>🪖 시디즈 시리즈 (T60·T50·T20·GX·모브)</h3>
+  
+    <table class="comp-table">
+      <thead><tr><th>모델/브랜드</th><th class='num'>월 검색량</th><th class='num'>PC</th><th class='num'>MO</th><th>경쟁도</th><th class='num'>24h 언급</th><th>채널</th></tr></thead>
+      <tbody><tr><td><strong>시디즈T50</strong></td><td class='num'>25,990</td><td class='num'>8,290</td><td class='num'>17,700</td><td>중간</td><td class='num'>83</td><td class='num small'>B23/C30/S30</td></tr><tr><td><strong>시디즈T60</strong></td><td class='num'>9,860</td><td class='num'>3,400</td><td class='num'>6,460</td><td>중간</td><td class='num'>81</td><td class='num small'>B23/C28/S30</td></tr><tr><td><strong>시디즈T20</strong></td><td class='num'>9,320</td><td class='num'>2,740</td><td class='num'>6,580</td><td>중간</td><td class='num'>0</td><td class='num small'>B0/C0/S0</td></tr><tr><td><strong>시디즈GX</strong></td><td class='num'>4,890</td><td class='num'>1,660</td><td class='num'>3,230</td><td>중간</td><td class='num'>90</td><td class='num small'>B30/C30/S30</td></tr><tr><td><strong>시디즈모브</strong></td><td class='num'>0</td><td class='num'>0</td><td class='num'>0</td><td></td><td class='num'>21</td><td class='num small'>B17/C3/S1</td></tr></tbody>
+    </table>
+    
+
+  <h3>⚔️ 동급 경쟁 (사이즈오브체어·클라우드백·마이사이즈체어·듀오백)</h3>
+  
+    <table class="comp-table">
+      <thead><tr><th>모델/브랜드</th><th class='num'>월 검색량</th><th class='num'>PC</th><th class='num'>MO</th><th>경쟁도</th><th class='num'>24h 언급</th><th>채널</th></tr></thead>
+      <tbody><tr><td><strong>듀오백</strong></td><td class='num'>43,800</td><td class='num'>28,000</td><td class='num'>15,800</td><td>중간</td><td class='num'>0</td><td class='num small'>B0/C0/S0</td></tr><tr><td><strong>사이즈오브체어</strong></td><td class='num'>10,160</td><td class='num'>3,810</td><td class='num'>6,350</td><td>중간</td><td class='num'>90</td><td class='num small'>B30/C30/S30</td></tr><tr><td><strong>클라우드백</strong></td><td class='num'>8,280</td><td class='num'>2,270</td><td class='num'>6,010</td><td>중간</td><td class='num'>81</td><td class='num small'>B25/C26/S30</td></tr><tr><td><strong>마이사이즈체어</strong></td><td class='num'>1,980</td><td class='num'>750</td><td class='num'>1,230</td><td>중간</td><td class='num'>90</td><td class='num small'>B30/C30/S30</td></tr></tbody>
+    </table>
+    
+
+  <h3>👑 프리미엄 (허먼밀러·스틸케이스)</h3>
+  
+    <table class="comp-table">
+      <thead><tr><th>모델/브랜드</th><th class='num'>월 검색량</th><th class='num'>PC</th><th class='num'>MO</th><th>경쟁도</th><th class='num'>24h 언급</th><th>채널</th></tr></thead>
+      <tbody><tr><td><strong>허먼밀러</strong></td><td class='num'>35,100</td><td class='num'>13,400</td><td class='num'>21,700</td><td>중간</td><td class='num'>0</td><td class='num small'>B0/C0/S0</td></tr><tr><td><strong>에어론</strong></td><td class='num'>35,100</td><td class='num'>13,400</td><td class='num'>21,700</td><td>중간</td><td class='num'>0</td><td class='num small'>B0/C0/S0</td></tr><tr><td><strong>스틸케이스</strong></td><td class='num'>9,980</td><td class='num'>5,060</td><td class='num'>4,920</td><td>중간</td><td class='num'>0</td><td class='num small'>B0/C0/S0</td></tr><tr><td><strong>임바디</strong></td><td class='num'>130</td><td class='num'>10</td><td class='num'>120</td><td>낮음</td><td class='num'>0</td><td class='num small'>B0/C0/S0</td></tr></tbody>
+    </table>
+    
+</section>
+
+<section>
+  <h2>📊 콘텐츠 점유 (24h 신규 글)</h2>
+  <table class="share-table">
+    <thead><tr><th>키워드</th><th class='num'>건</th><th class='num'>점유율</th><th>비교</th></tr></thead>
+    <tbody><tr><td>허먼밀러 에어론</td><td class='num'>90</td><td class='num'>11.9%</td><td><div class='bar' style='width:36%'></div></td></tr><tr><td>시디즈 GX</td><td class='num'>90</td><td class='num'>11.9%</td><td><div class='bar' style='width:36%'></div></td></tr><tr><td>사이즈오브체어</td><td class='num'>90</td><td class='num'>11.9%</td><td><div class='bar' style='width:36%'></div></td></tr><tr><td>마이사이즈체어</td><td class='num'>90</td><td class='num'>11.9%</td><td><div class='bar' style='width:36%'></div></td></tr><tr><td>시디즈 T50</td><td class='num'>83</td><td class='num'>11.0%</td><td><div class='bar' style='width:33%'></div></td></tr><tr><td>레니프</td><td class='num'>83</td><td class='num'>11.0%</td><td><div class='bar' style='width:33%'></div></td></tr><tr><td>클라우드백</td><td class='num'>81</td><td class='num'>10.7%</td><td><div class='bar' style='width:32%'></div></td></tr><tr><td>시디즈 T60</td><td class='num'>81</td><td class='num'>10.7%</td><td><div class='bar' style='width:32%'></div></td></tr><tr><td>유니백체어 프로</td><td class='num'>46</td><td class='num'>6.1%</td><td><div class='bar' style='width:18%'></div></td></tr><tr><td>시디즈 모브</td><td class='num'>21</td><td class='num'>2.8%</td><td><div class='bar' style='width:8%'></div></td></tr></tbody>
+  </table>
+</section>
+
+<section>
+  <h2>🔍 시장 검색량 TOP 20 (의자 관련)</h2>
+  <table class="topkw-table">
+    <thead><tr><th>#</th><th>키워드</th><th class='num'>월 합계</th><th class='num'>PC</th><th class='num'>모바일</th><th>경쟁도</th></tr></thead>
+    <tbody><tr><td>1</td><td><code>의자</code></td><td class='num'>63,000</td><td class='num'>20,300</td><td class='num'>42,700</td><td>중간</td></tr><tr><td>2</td><td><code>시디즈</code></td><td class='num'>62,500</td><td class='num'>25,100</td><td class='num'>37,400</td><td>높음</td></tr><tr><td>3</td><td><code>식탁의자</code></td><td class='num'>55,860</td><td class='num'>8,660</td><td class='num'>47,200</td><td>중간</td></tr><tr><td>4</td><td><code>시디즈의자</code></td><td class='num'>54,700</td><td class='num'>15,100</td><td class='num'>39,600</td><td>높음</td></tr><tr><td>5</td><td><code>사무용의자</code></td><td class='num'>42,300</td><td class='num'>28,000</td><td class='num'>14,300</td><td>중간</td></tr><tr><td>6</td><td><code>컴퓨터의자</code></td><td class='num'>40,800</td><td class='num'>21,100</td><td class='num'>19,700</td><td>높음</td></tr><tr><td>7</td><td><code>접이식의자</code></td><td class='num'>33,080</td><td class='num'>7,880</td><td class='num'>25,200</td><td>중간</td></tr><tr><td>8</td><td><code>게이밍의자</code></td><td class='num'>31,800</td><td class='num'>10,700</td><td class='num'>21,100</td><td>높음</td></tr><tr><td>9</td><td><code>허먼밀러</code></td><td class='num'>30,300</td><td class='num'>13,400</td><td class='num'>16,900</td><td>중간</td></tr><tr><td>10</td><td><code>허먼밀러의자</code></td><td class='num'>28,970</td><td class='num'>7,270</td><td class='num'>21,700</td><td>중간</td></tr><tr><td>11</td><td><code>시디즈T50</code></td><td class='num'>25,990</td><td class='num'>8,290</td><td class='num'>17,700</td><td>높음</td></tr><tr><td>12</td><td><code>책상의자</code></td><td class='num'>22,430</td><td class='num'>9,230</td><td class='num'>13,200</td><td>중간</td></tr><tr><td>13</td><td><code>사무실의자</code></td><td class='num'>22,100</td><td class='num'>10,500</td><td class='num'>11,600</td><td>중간</td></tr><tr><td>14</td><td><code>듀오백</code></td><td class='num'>19,030</td><td class='num'>7,830</td><td class='num'>11,200</td><td>높음</td></tr><tr><td>15</td><td><code>좌식의자</code></td><td class='num'>16,270</td><td class='num'>3,370</td><td class='num'>12,900</td><td>중간</td></tr><tr><td>16</td><td><code>화장대의자</code></td><td class='num'>14,410</td><td class='num'>2,110</td><td class='num'>12,300</td><td>중간</td></tr><tr><td>17</td><td><code>서울대의자</code></td><td class='num'>13,760</td><td class='num'>2,760</td><td class='num'>11,000</td><td>중간</td></tr><tr><td>18</td><td><code>리클라이너의자</code></td><td class='num'>13,380</td><td class='num'>2,680</td><td class='num'>10,700</td><td>중간</td></tr><tr><td>19</td><td><code>회의용의자</code></td><td class='num'>13,150</td><td class='num'>11,600</td><td class='num'>1,550</td><td>중간</td></tr><tr><td>20</td><td><code>수유의자</code></td><td class='num'>12,700</td><td class='num'>1,600</td><td class='num'>11,100</td><td>중간</td></tr></tbody>
+  </table>
+</section>
+
+<section>
+  <h2>💬 콘텐츠 언급 상세 (블로그·카페·쇼핑 24h)</h2>
+  <div class="content-grid">
+        <div class="content-card">
+          <h3>마이사이즈체어</h3>
+          <div class="content-stats">
+            <span class="big-num">90</span>건
+            <span class="ch-split">B:30 C:30 S:30</span>
+            <span class="delta">베이스라인</span>
+          </div>
+          <ul class='samples'><li><a href="https://blog.naver.com/ttylbs557x3/224268950615" target="_blank" rel="noopener">[blog] 클라우드백 마이사이즈체어 컴퓨터의자 편안한 책상 의자</a> <span class="meta">그 순간의 진실 · 20260429</span></li><li><a href="https://blog.naver.com/love-myself-always/224268919405" target="_blank" rel="noopener">[blog] 클라우드백 마이사이즈체어... 체형에 맞춘 완벽한 커스텀 체어</a> <span class="meta">취미공간 · 20260429</span></li><li><a href="https://blog.naver.com/eveningue/224268867655" target="_blank" rel="noopener">[blog] 책상 의자 선택 시 고려해야 할 3가지 필수 기능</a> <span class="meta">eveningue님의 블로그 · 20260429</span></li></ul>
+        </div>
+        
+        <div class="content-card">
+          <h3>사이즈오브체어</h3>
+          <div class="content-stats">
+            <span class="big-num">90</span>건
+            <span class="ch-split">B:30 C:30 S:30</span>
+            <span class="delta">베이스라인</span>
+          </div>
+          <ul class='samples'><li><a href="https://blog.naver.com/usuxiobkp/224268941076" target="_blank" rel="noopener">[blog] 사이즈오브체어 몰입 의자 직접 써보니 이런 점 다르다</a> <span class="meta">usuxiobkp님의 블로그 · 20260429</span></li><li><a href="https://blog.naver.com/zjkimprove/224268866905" target="_blank" rel="noopener">[blog] 학생 자세교정 의자, 서울대 납품 사이즈오브체어 몰입세트...</a> <span class="meta">zjkimprove님의 블로그 · 20260429</span></li><li><a href="https://blog.naver.com/heena_mom/224268830455" target="_blank" rel="noopener">[blog] 2평 남짓 아이방꾸미기ㅣ가구옮기기 옷정리 수납침대 매트리스</a> <span class="meta">▒ 희나네집 ▒ 라이프스타일디자이너! : 비주언니 · 20260429</span></li></ul>
+        </div>
+        
+        <div class="content-card">
+          <h3>시디즈 GX</h3>
+          <div class="content-stats">
+            <span class="big-num">90</span>건
+            <span class="ch-split">B:30 C:30 S:30</span>
+            <span class="delta">베이스라인</span>
+          </div>
+          <ul class='samples'><li><a href="https://blog.naver.com/sidiz_su/224268333655" target="_blank" rel="noopener">[blog] [시디즈 성수] 게임과 업무 사이 완벽한 밸런스 &#x27;GX 리뉴얼...</a> <span class="meta">시디즈 더 프로그레시브 성수 · 20260428</span></li><li><a href="https://blog.naver.com/sidiz_mg/224267949030" target="_blank" rel="noopener">[blog] 리뉴얼된 시디즈 게이밍의자 GX, 뭐가 달라졌을까?</a> <span class="meta">SIDIZ THE PROGRESSIVE MAGOK · 20260428</span></li><li><a href="https://blog.naver.com/sidz3723215/224266763540" target="_blank" rel="noopener">[blog] 시디즈 GX 리뉴얼 제품 체험전시장 금남로점 대량구매 역대급...</a> <span class="meta">의자는 시디즈 금남로점에서 · 20260428</span></li></ul>
+        </div>
+        
+        <div class="content-card">
+          <h3>허먼밀러 에어론</h3>
+          <div class="content-stats">
+            <span class="big-num">90</span>건
+            <span class="ch-split">B:30 C:30 S:30</span>
+            <span class="delta">베이스라인</span>
+          </div>
+          <ul class='samples'><li><a href="https://blog.naver.com/fxyinch/224268902923" target="_blank" rel="noopener">[blog] 허먼밀러 뉴에어론 풀펑션 의자, 헤드레스트 전용 옷걸이까지...</a> <span class="meta">fxyinch님의 블로그 · 20260429</span></li><li><a href="https://blog.naver.com/wclaxrz4829-1kb/224268749601" target="_blank" rel="noopener">[blog] 일상용으로 좋은 HOMEY NEST 자세교정 편한 공부 책상의자...</a> <span class="meta">wclaxrz4829-1kb님의 블로그 · 20260429</span></li><li><a href="https://blog.naver.com/umaisigoto2375/224268327156" target="_blank" rel="noopener">[blog] 오늘의 제품 추천 ! 허먼밀러 뉴에어론 의자</a> <span class="meta">’うまいしごと’です。よろしくお願いします · 20260428</span></li></ul>
+        </div>
+        
+        <div class="content-card">
+          <h3>레니프</h3>
+          <div class="content-stats">
+            <span class="big-num">83</span>건
+            <span class="ch-split">B:28 C:29 S:26</span>
+            <span class="delta">베이스라인</span>
+          </div>
+          <ul class='samples'><li><a href="https://blog.naver.com/pjtgogo1/224240215812" target="_blank" rel="noopener">[blog] 레니프 직접 가본 솔직한 경험</a> <span class="meta">pjtgogo1님의 블로그 · 20260406</span></li><li><a href="https://blog.naver.com/riverfigure2/224037950822" target="_blank" rel="noopener">[blog] אסרף קארין נ. אבנר טווק...</a> <span class="meta">rifi2님의 블로그 · 20251011</span></li><li><a href="https://blog.naver.com/riverfigure2/224037920578" target="_blank" rel="noopener">[blog] אסרף קארין נ. אבנר טווק...</a> <span class="meta">rifi2님의 블로그 · 20251011</span></li></ul>
+        </div>
+        
+        <div class="content-card">
+          <h3>시디즈 T50</h3>
+          <div class="content-stats">
+            <span class="big-num">83</span>건
+            <span class="ch-split">B:23 C:30 S:30</span>
+            <span class="delta">베이스라인</span>
+          </div>
+          <ul class='samples'><li><a href="https://blog.naver.com/minimalistsungwon/224265757218" target="_blank" rel="noopener">[blog] 시디즈 T50 AIR 후기｜3년 사용 후 허리 통증 변화 직접 경험</a> <span class="meta">성원의 선택 | 패션 &amp; 리뷰 · 20260429</span></li><li><a href="https://bluebeat.tistory.com/182" target="_blank" rel="noopener">[blog] 시디즈 고객센터 전화번호 AS 신청방법 알아보기</a> <span class="meta">bluebeat · 20260429</span></li><li><a href="https://www.bluelog.kr/72352" target="_blank" rel="noopener">[blog] 광주 중고 공부방책상 눈높 하늘소로 청소년 검색결과 비대면정리</a> <span class="meta">bluelog.kr · 20260429</span></li></ul>
+        </div>
+        
+        <div class="content-card">
+          <h3>시디즈 T60</h3>
+          <div class="content-stats">
+            <span class="big-num">81</span>건
+            <span class="ch-split">B:23 C:28 S:30</span>
+            <span class="delta">베이스라인</span>
+          </div>
+          <ul class='samples'><li><a href="https://blog.naver.com/rooomi_/224264472787" target="_blank" rel="noopener">[blog] 시디즈 아이블의자 서울대의자 후기 추천 비교</a> <span class="meta">헛뚱이와 육아중-♥ · 20260426</span></li><li><a href="https://blog.naver.com/rooomi_/224262494627" target="_blank" rel="noopener">[blog] 시디즈 t60 air 후기 재택근무 의자 풀메쉬 허리안아픈 시원한...</a> <span class="meta">헛뚱이와 육아중-♥ · 20260425</span></li><li><a href="https://blog.naver.com/storm0403/224264460694" target="_blank" rel="noopener">[blog] [듀오백 의자] 허리 통증 안녕! 공부 효율 UP, 듀오백 브라보...</a> <span class="meta">인사이드 바디 · 20260425</span></li></ul>
+        </div>
+        
+        <div class="content-card">
+          <h3>클라우드백</h3>
+          <div class="content-stats">
+            <span class="big-num">81</span>건
+            <span class="ch-split">B:25 C:26 S:30</span>
+            <span class="delta">베이스라인</span>
+          </div>
+          <ul class='samples'><li><a href="https://blog.naver.com/win0884/224268986906" target="_blank" rel="noopener">[blog] 아이폰17E 구매후기</a> <span class="meta">게으른 완벽주의자 탈출기 · 20260429</span></li><li><a href="https://blog.naver.com/freechal1192/224268944589" target="_blank" rel="noopener">[blog] 하정우 수석 사임관련, 소버린AI 사견</a> <span class="meta">IT · 20260429</span></li><li><a href="https://blog.naver.com/richard951/224268933587" target="_blank" rel="noopener">[blog] 사랑의 꿈 / 사랑의 꿈 ( 24 )</a> <span class="meta">richard951님의블로그 · 20260429</span></li></ul>
+        </div>
+        
+        <div class="content-card">
+          <h3>유니백체어 프로</h3>
+          <div class="content-stats">
+            <span class="big-num">46</span>건
+            <span class="ch-split">B:30 C:8 S:8</span>
+            <span class="delta">베이스라인</span>
+          </div>
+          <ul class='samples'><li><a href="https://blog.naver.com/hoam8964/224268253888" target="_blank" rel="noopener">[blog] 어버이날 선물 의자 BEST 5 — 부모님께 직접 보내드리고...</a> <span class="meta">나디아의 하루 · 20260428</span></li><li><a href="https://blog.naver.com/geni4536/224265887779" target="_blank" rel="noopener">[blog] 바른설계 유니백체어 프로 구매 전 확인해야 할 포인트</a> <span class="meta">버라이어티 스토어 · 20260427</span></li><li><a href="https://blog.naver.com/pjm-pjmlove2003/224265767280" target="_blank" rel="noopener">[blog] 바른설계 유니백체어 프로 오트밀 그레이사무용 의자 추천과...</a> <span class="meta">리뷰정리함 · 20260426</span></li></ul>
+        </div>
+        
+        <div class="content-card">
+          <h3>시디즈 모브</h3>
+          <div class="content-stats">
+            <span class="big-num">21</span>건
+            <span class="ch-split">B:17 C:3 S:1</span>
+            <span class="delta">베이스라인</span>
+          </div>
+          <ul class='samples'><li><a href="https://blog.naver.com/hankyuldata/224256775954" target="_blank" rel="noopener">[blog] 2025년 5월 신규등록 제조업체</a> <span class="meta">한결데이타시스템 · 20260418</span></li><li><a href="https://blog.naver.com/sidiz_su/224167674713" target="_blank" rel="noopener">[blog] 알로소 에피소드 성수, 전시된 그 소파 뭐였지? &lt;전시품 상세 탐구&gt;</a> <span class="meta">시디즈 더 프로그레시브 성수 · 20260201</span></li><li><a href="https://blog.naver.com/hmh1363/224154630599" target="_blank" rel="noopener">[blog] 대전사무용가구전문 네오오피스 :충북 영동지역 OO사무실...</a> <span class="meta">대전사무용가구네오오피스-시디즈/리바트오피스전시장 · 20260121</span></li></ul>
+        </div>
+        </div>
+</section>
+
+<footer>
+  🔢 <strong>ROAS 듀얼 표시 절대 규칙</strong> (rules_roas_dual_display.md):
+  본 리포트의 모든 ROAS 는 <em>총 ROAS (구매+장바구니, LENIF 추적 시점)</em> 와
+  <em>구매완료 ROAS (conversion_type='purchase' 만)</em> 를 모두 표시한다.
+  옵티마이저 target 350% 는 구매완료 기준.
+  <br><br>
+  <code>data: chair_market.db</code> · 자동 발행 매일 08:00 KST ·
+  생성 시각 2026-04-29 11:54:28
+</footer>
+
+</div>
+
+<script>
+const ROAS_DATES = ["2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-04", "2026-04-05", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-11", "2026-04-12", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-18", "2026-04-19", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-25", "2026-04-26", "2026-04-27", "2026-04-28"];
+const ROAS_TOTAL = [1585.5, 1173.6, 2161.7, 887.1, 1175.9, 1813.4, 991.1, 968.6, 976.0, 714.6, 2555.4, 1420.7, 1145.4, 993.8, 585.3, 1303.1, 923.7, 633.4, 859.1, 964.7, 1107.2, 902.3, 778.2, 560.3, 801.3, 453.0, 976.8, 664.2, 1127.5, 512.4];
+const ROAS_PURCH = [443.4, 288.3, 810.0, 218.4, 457.1, 715.9, 65.7, 432.3, 360.2, 275.3, 892.7, 617.8, 202.3, 255.2, 135.2, 316.3, 608.7, 251.8, 192.4, 221.6, 248.6, 434.7, 723.6, 214.1, 227.5, 106.2, 149.3, 335.7, 590.0, 72.8];
+const KPI_COST = [419606, 454985, 490138, 389040, 321963, 342199, 351183, 423559, 421036, 365432, 305146, 265642, 305329, 338704, 285359, 237287, 294448, 302956, 298756, 268237, 330570, 379274, 205384, 513445, 347548, 336113, 266321, 375451, 367176, 406239];
+const REV_TOTAL = [6652700, 5339800, 10595490, 3451200, 3786000, 6205350, 3480600, 4102600, 4109250, 2611550, 7797600, 3773901, 3497300, 3366200, 1670300, 3092200, 2719701, 1918900, 2566500, 2587600, 3660200, 3422000, 1598400, 2877000, 2784850, 1522650, 2601500, 2493900, 4139900, 2081400];
+const REV_PURCH = [1860600, 1311500, 3970090, 849500, 1471700, 2449850, 230800, 1830900, 1516450, 1005950, 2723900, 1641100, 617700, 864400, 385900, 750500, 1792400, 762800, 574700, 594500, 821900, 1648800, 1486200, 1099500, 790550, 357050, 397600, 1260500, 2166400, 295800];
+const TREND_DATES = ["2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-04", "2026-04-05", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-11", "2026-04-12", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-18", "2026-04-19", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-25", "2026-04-26", "2026-04-27", "2026-04-28"];
+const TREND_DATASETS = [{"label": "\ub3d9\uae09 \uacbd\uc7c1", "data": [37.14243, 35.09708, 33.8669, 34.01511, 30.72476, 26.15977, 27.73084, 34.43011, 33.97065, 30.81369, 31.28797, 31.11012, 28.67941, 30.78405, 36.10493, 32.71083, 32.39958, 29.33155, 28.85726, 24.82584, 27.9087, 37.72046, 33.73351, 31.59922, 29.61316, 28.75352, 24.94441, 30.16155, 33.02208, 31.25833], "borderColor": "#dc2626", "backgroundColor": "#dc262622", "tension": 0.3, "borderWidth": 1.5}, {"label": "\ub3d9\uc77c\uc138\uadf8\uba3c\ud2b8", "data": [32.47369, 30.85815, 28.6053, 28.76834, 26.39691, 21.80228, 22.57299, 28.88691, 29.33155, 26.36727, 26.15977, 26.2487, 23.84763, 26.29316, 30.82851, 28.47191, 28.05691, 24.87031, 24.48495, 20.82406, 22.95835, 32.08833, 28.14584, 26.61923, 25.18156, 24.44049, 20.51282, 24.49977, 27.74566, 26.21906], "borderColor": "#6b7280", "backgroundColor": "#6b728022", "tension": 0.3, "borderWidth": 1.5}, {"label": "\ub808\ub2c8\ud504", "data": [1.68963, 1.28946, 0.59285, 0.68178, 0.85964, 0.68178, 0.40017, 0.94856, 0.65214, 0.53357, 0.37053, 0.91892, 0.34089, 0.42982, 0.62249, 0.87446, 0.4891, 0.26678, 0.23714, 0.23714, 0.47428, 0.17785, 0.38535, 0.0741, 0.37053, 0.56321, 0.57803, 0.65214, 1.42285, 0.72624], "borderColor": "#6b7280", "backgroundColor": "#6b728022", "tension": 0.3, "borderWidth": 1.5}, {"label": "\uc2dc\ub514\uc988", "data": [94.82733, 88.92841, 83.88913, 85.07484, 79.38342, 75.4854, 81.96235, 93.55269, 86.18645, 79.90217, 83.1036, 80.02074, 97.80643, 85.32681, 97.56929, 87.44627, 81.62146, 76.13754, 75.70772, 74.00326, 82.9702, 93.34519, 91.27019, 79.1611, 79.87253, 77.27879, 73.03986, 81.59181, 92.94501, 83.53342], "borderColor": "#6b7280", "backgroundColor": "#6b728022", "tension": 0.3, "borderWidth": 1.5}, {"label": "\uc2dc\ub514\uc988 \uc2dc\ub9ac\uc988", "data": [94.82733, 88.92841, 83.88913, 85.07484, 79.38342, 75.4854, 81.96235, 93.55269, 86.18645, 79.90217, 83.1036, 80.02074, 97.80643, 85.32681, 97.56929, 87.44627, 81.62146, 76.13754, 75.70772, 74.00326, 82.9702, 93.34519, 91.27019, 79.1611, 79.87253, 77.27879, 73.03986, 81.59181, 92.94501, 83.53342], "borderColor": "#ea580c", "backgroundColor": "#ea580c22", "tension": 0.3, "borderWidth": 1.5}, {"label": "\uc2dc\uc7a5 \uce74\ud14c\uace0\ub9ac", "data": [99.52571, 93.44894, 97.88053, 92.17429, 86.2902, 78.42003, 83.71127, 100.0, 91.38876, 92.42626, 95.06447, 87.3277, 79.26485, 82.22913, 92.97465, 88.58752, 87.7427, 87.87609, 86.18645, 73.81058, 83.66681, 93.03394, 89.83251, 94.97554, 99.00696, 90.82555, 77.79753, 89.07662, 99.57017, 94.20483], "borderColor": "#0ea5e9", "backgroundColor": "#0ea5e922", "tension": 0.3, "borderWidth": 1.5}, {"label": "\uc790\uc0ac (\ub808\ub2c8\ud504)", "data": [1.68963, 1.28946, 0.59285, 0.68178, 0.85964, 0.68178, 0.40017, 0.94856, 0.65214, 0.53357, 0.37053, 0.91892, 0.34089, 0.42982, 0.62249, 0.87446, 0.4891, 0.26678, 0.23714, 0.23714, 0.47428, 0.17785, 0.38535, 0.0741, 0.37053, 0.56321, 0.57803, 0.65214, 1.42285, 0.72624], "borderColor": "#16a34a", "backgroundColor": "#16a34a22", "tension": 0.3, "borderWidth": 2.5}, {"label": "\uce74\ud14c\uace0\ub9ac", "data": [99.52571, 93.44894, 97.88053, 92.17429, 86.2902, 78.42003, 83.71127, 100.0, 91.38876, 92.42626, 95.06447, 87.3277, 79.26485, 82.22913, 92.97465, 88.58752, 87.7427, 87.87609, 86.18645, 73.81058, 83.66681, 93.03394, 89.83251, 94.97554, 99.00696, 90.82555, 77.79753, 89.07662, 99.57017, 94.20483], "borderColor": "#6b7280", "backgroundColor": "#6b728022", "tension": 0.3, "borderWidth": 1.5}, {"label": "\ud504\ub9ac\ubbf8\uc5c4", "data": [25.71513, 21.95049, 18.80835, 29.39084, 20.74996, 18.46746, 15.81443, 21.53549, 22.11353, 19.47532, 20.37942, 18.28961, 16.54068, 16.37764, 21.4021, 19.16407, 18.60085, 18.6305, 18.9121, 14.8955, 16.68889, 22.30621, 20.74996, 21.89121, 23.61049, 19.83103, 16.08122, 17.63746, 19.40121, 17.29657], "borderColor": "#7c3aed", "backgroundColor": "#7c3aed22", "tension": 0.3, "borderWidth": 1.5}];
+const TARGET_ROAS = 350.0;
+
+new Chart(document.getElementById('roasChart'), {
+  type: 'line',
+  data: {
+    labels: ROAS_DATES,
+    datasets: [
+      { label: '총 ROAS (구매+장바구니)', data: ROAS_TOTAL,
+         borderColor: '#2563eb', backgroundColor: '#2563eb22', tension: 0.25 },
+      { label: '구매완료 ROAS', data: ROAS_PURCH,
+         borderColor: '#16a34a', backgroundColor: '#16a34a22', tension: 0.25 },
+      { label: 'target 350% (구매완료 기준)', data: ROAS_DATES.map(()=>TARGET_ROAS),
+         borderColor: '#dc2626', borderDash: [4,4], borderWidth: 1.5, pointRadius: 0, fill: false }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' } },
+    scales: { y: { beginAtZero: true, title: { display: true, text: 'ROAS %' } } }
+  }
+});
+
+new Chart(document.getElementById('revChart'), {
+  type: 'bar',
+  data: {
+    labels: ROAS_DATES,
+    datasets: [
+      { label: '광고비', data: KPI_COST, backgroundColor: '#cbd5e144', borderColor: '#94a3b8', borderWidth: 1 },
+      { label: '총 매출 (구매+장바구니)', data: REV_TOTAL, backgroundColor: '#2563eb44', borderColor: '#2563eb', borderWidth: 1 },
+      { label: '구매완료 매출', data: REV_PURCH, backgroundColor: '#16a34a44', borderColor: '#16a34a', borderWidth: 1 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' } },
+    scales: { y: { beginAtZero: true, ticks: { callback: v => '₩' + (v/1000).toFixed(0) + 'K' } } }
+  }
+});
+
+if (TREND_DATES.length > 0) {
+  new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: { labels: TREND_DATES, datasets: TREND_DATASETS },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom' },
+        tooltip: { mode: 'index', intersect: false } },
+      scales: { y: { beginAtZero: true, title: { display: true, text: '검색 트렌드 (0-100 정규화)' } } },
+      interaction: { mode: 'nearest', axis: 'x', intersect: false }
+    }
+  });
+}
+</script>
+</body>
+</html>
