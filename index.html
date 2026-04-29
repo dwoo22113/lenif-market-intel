@@ -83,6 +83,26 @@
   /* share bar */
   .share-table .bar { background: #2563eb; height: 16px; border-radius: 2px; }
 
+  /* 💰 가격 모니터링 카드 */
+  .price-grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 16px; }
+  .price-card { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+  .price-card h3 { margin: 0 0 4px 0; font-size: 15px; }
+  .price-scope { font-size: 11.5px; color: var(--muted); margin-bottom: 10px; }
+  .price-card .price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .price-cell { background: #f8fafc; border-radius: 4px; padding: 8px; }
+  .price-cell .pl { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.3px; }
+  .price-cell .pn { font-size: 17px; font-weight: 700; margin: 2px 0; font-variant-numeric: tabular-nums; }
+  .price-cell .pc { font-size: 11.5px; }
+  .price-samples { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+  .price-samples .samples-title { font-size: 11.5px; color: var(--muted); margin-bottom: 4px; }
+  .price-samples ul { margin: 0; padding-left: 14px; font-size: 11.5px; }
+  .price-samples li { margin: 2px 0; }
+  .price-samples a { color: var(--accent-total); text-decoration: none; }
+  .price-samples a:hover { text-decoration: underline; }
+  .price-samples .meta { color: var(--muted); }
+
+  .sale-alert { background: #fef2f2; border-left: 3px solid var(--fail); padding: 10px 14px; border-radius: 4px; margin-bottom: 14px; font-size: 13px; }
+
   /* 자사 라인업 badge */
   .own-table { width: 100%; border-collapse: collapse; font-size: 13px; }
   .own-table th, .own-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); text-align: left; }
@@ -197,6 +217,143 @@
 </section>
 
 <section>
+  <h2>💰 경쟁 모델 가격 모니터링 — 4 모델 비교</h2>
+  <p class="muted" style="font-size:12.5px">시디즈 T60 · 사이즈오브체어 베이직 · 사이즈오브체어 프리미엄 · 몰입체어. 매일 네이버 쇼핑 검색 API 의 최저가/평균/판매처를 누적 → 세일 자동 감지 (전일 대비 -8% 이하). brand 매칭 정품 우선 표시, 정품 데이터 부족 시 전체 통계.</p>
+
+  
+
+  <div class="price-grid-cards">
+        <div class="price-card" style="border-top:4px solid #ea580c">
+          <h3>시디즈 T60</h3>
+          <div class="price-scope">정품(시디즈) · 19개 상품 · 6개 판매처</div>
+          <div class="price-grid">
+            <div class="price-cell">
+              <div class="pl">최저가</div>
+              <div class="pn" style="color:#ea580c">₩51,200</div>
+              <div class="pc"><span class="muted">첫 수집</span></div>
+            </div>
+            <div class="price-cell">
+              <div class="pl">중앙값</div>
+              <div class="pn">₩451,500</div>
+              <div class="pc"><span class="muted">전체 기준</span></div>
+            </div>
+            <div class="price-cell">
+              <div class="pl">평균가</div>
+              <div class="pn">₩416,387</div>
+              <div class="pc"><span class="muted">정품(시디즈)</span></div>
+            </div>
+            <div class="price-cell">
+              <div class="pl">최고가</div>
+              <div class="pn">₩754,830</div>
+              <div class="pc"><span class="muted">최고 옵션</span></div>
+            </div>
+          </div>
+          <div class="price-samples">
+            <div class="samples-title">📍 최저가 TOP 3</div>
+            <ul><li>₩51,200 · <span class="meta">쿠팡</span> · <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9303070398&amp;ctag=9303070398&amp;lptag=I27676916136&amp;itemId=27676916136&amp;vendorItemId=94638986218&amp;spec=10305199" target="_blank" rel="noopener">시디즈 T60 AIR 의자 좌판 커버</a></li><li>₩72,700 · <span class="meta">쿠팡</span> · <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9498604711&amp;ctag=9498604711&amp;lptag=V95266412995&amp;itemId=28296124793&amp;vendorItemId=95266412995&amp;spec=10305199" target="_blank" rel="noopener">시디즈 T60 AIR 의자 좌판 커버 - 선택1  그레이</a></li><li>₩72,700 · <span class="meta">쿠팡</span> · <a href="https://link.coupang.com/re/PCSNAVERPCSDP?pageKey=9498604711&amp;ctag=9498604711&amp;lptag=V95266412999&amp;itemId=28296124792&amp;vendorItemId=95266412999&amp;spec=10305199" target="_blank" rel="noopener">시디즈 T60 AIR 의자 좌판 커버 - 선택1  차콜</a></li></ul>
+          </div>
+        </div>
+        
+        <div class="price-card" style="border-top:4px solid #2563eb">
+          <h3>사이즈오브체어 베이직</h3>
+          <div class="price-scope">전체 · 23개 상품 · 13개 판매처</div>
+          <div class="price-grid">
+            <div class="price-cell">
+              <div class="pl">최저가</div>
+              <div class="pn" style="color:#2563eb">₩345,100</div>
+              <div class="pc"><span class="muted">첫 수집</span></div>
+            </div>
+            <div class="price-cell">
+              <div class="pl">중앙값</div>
+              <div class="pn">₩389,000</div>
+              <div class="pc"><span class="muted">전체 기준</span></div>
+            </div>
+            <div class="price-cell">
+              <div class="pl">평균가</div>
+              <div class="pn">₩464,733</div>
+              <div class="pc"><span class="muted">전체</span></div>
+            </div>
+            <div class="price-cell">
+              <div class="pl">최고가</div>
+              <div class="pn">₩788,060</div>
+              <div class="pc"><span class="muted">최고 옵션</span></div>
+            </div>
+          </div>
+          <div class="price-samples">
+            <div class="samples-title">📍 최저가 TOP 3</div>
+            <ul><li class="muted">데이터 없음</li></ul>
+          </div>
+        </div>
+        
+        <div class="price-card" style="border-top:4px solid #7c3aed">
+          <h3>사이즈오브체어 프리미엄</h3>
+          <div class="price-scope">전체 · 9개 상품 · 5개 판매처</div>
+          <div class="price-grid">
+            <div class="price-cell">
+              <div class="pl">최저가</div>
+              <div class="pn" style="color:#7c3aed">₩711,000</div>
+              <div class="pc"><span class="muted">첫 수집</span></div>
+            </div>
+            <div class="price-cell">
+              <div class="pl">중앙값</div>
+              <div class="pn">₩729,000</div>
+              <div class="pc"><span class="muted">전체 기준</span></div>
+            </div>
+            <div class="price-cell">
+              <div class="pl">평균가</div>
+              <div class="pn">₩853,411</div>
+              <div class="pc"><span class="muted">전체</span></div>
+            </div>
+            <div class="price-cell">
+              <div class="pl">최고가</div>
+              <div class="pn">₩1,602,000</div>
+              <div class="pc"><span class="muted">최고 옵션</span></div>
+            </div>
+          </div>
+          <div class="price-samples">
+            <div class="samples-title">📍 최저가 TOP 3</div>
+            <ul><li class="muted">데이터 없음</li></ul>
+          </div>
+        </div>
+        
+        <div class="price-card" style="border-top:4px solid #dc2626">
+          <h3>몰입체어</h3>
+          <div class="price-scope">전체 · 34개 상품 · 10개 판매처</div>
+          <div class="price-grid">
+            <div class="price-cell">
+              <div class="pl">최저가</div>
+              <div class="pn" style="color:#dc2626">₩58,900</div>
+              <div class="pc"><span class="muted">첫 수집</span></div>
+            </div>
+            <div class="price-cell">
+              <div class="pl">중앙값</div>
+              <div class="pn">₩108,215</div>
+              <div class="pc"><span class="muted">전체 기준</span></div>
+            </div>
+            <div class="price-cell">
+              <div class="pl">평균가</div>
+              <div class="pn">₩144,962</div>
+              <div class="pc"><span class="muted">전체</span></div>
+            </div>
+            <div class="price-cell">
+              <div class="pl">최고가</div>
+              <div class="pn">₩439,600</div>
+              <div class="pc"><span class="muted">최고 옵션</span></div>
+            </div>
+          </div>
+          <div class="price-samples">
+            <div class="samples-title">📍 최저가 TOP 3</div>
+            <ul><li class="muted">데이터 없음</li></ul>
+          </div>
+        </div>
+        </div>
+
+  <h3>📈 일별 가격 추이 (실선=최저가, 점선=평균가)</h3>
+  <div class="chart-wrap tall"><canvas id="priceChart"></canvas></div>
+  <p class="muted" style="font-size:11.5px;margin-top:6px">* 매일 누적 — 첫 수집 후 7일 정도면 의미 있는 추이가 그려집니다. 세일·이벤트 시 최저가 라인이 급락.</p>
+</section>
+
+<section>
   <h2>🏠 자사 키워드 개별 추이 (30일)</h2>
   <p class="muted" style="font-size:12.5px">유니백체어 프로 · 유니백체어 · 레니프 · 바른설계 · 폴드핏체어 5 키워드를 데이터랩에서 별도 호출. 각 키워드의 검색 트렌드(0-100 정규화)·7일/30일 평균·변화율·기울기 추적. 같은 30일 내 max=100.</p>
   <div class="chart-wrap tall"><canvas id="ownLineupChart"></canvas></div>
@@ -244,7 +401,7 @@
   
     <table class="comp-table">
       <thead><tr><th>모델/브랜드</th><th class='num'>월 검색량</th><th class='num'>PC</th><th class='num'>MO</th><th>경쟁도</th><th class='num'>24h 언급</th><th>채널</th></tr></thead>
-      <tbody><tr><td><strong>시디즈T50</strong></td><td class='num'>25,990</td><td class='num'>8,290</td><td class='num'>17,700</td><td>중간</td><td class='num'>82</td><td class='num small'>B23/C29/S30</td></tr><tr><td><strong>시디즈T60</strong></td><td class='num'>9,860</td><td class='num'>3,400</td><td class='num'>6,460</td><td>중간</td><td class='num'>81</td><td class='num small'>B23/C28/S30</td></tr><tr><td><strong>시디즈T20</strong></td><td class='num'>9,320</td><td class='num'>2,740</td><td class='num'>6,580</td><td>중간</td><td class='num'>0</td><td class='num small'>B0/C0/S0</td></tr><tr><td><strong>시디즈GX</strong></td><td class='num'>4,890</td><td class='num'>1,660</td><td class='num'>3,230</td><td>중간</td><td class='num'>90</td><td class='num small'>B30/C30/S30</td></tr><tr><td><strong>시디즈모브</strong></td><td class='num'>0</td><td class='num'>0</td><td class='num'>0</td><td></td><td class='num'>21</td><td class='num small'>B17/C3/S1</td></tr></tbody>
+      <tbody><tr><td><strong>시디즈T50</strong></td><td class='num'>25,990</td><td class='num'>8,290</td><td class='num'>17,700</td><td>중간</td><td class='num'>82</td><td class='num small'>B23/C29/S30</td></tr><tr><td><strong>시디즈T60</strong></td><td class='num'>9,860</td><td class='num'>3,400</td><td class='num'>6,460</td><td>중간</td><td class='num'>105</td><td class='num small'>B23/C28/S54</td></tr><tr><td><strong>시디즈T20</strong></td><td class='num'>9,320</td><td class='num'>2,740</td><td class='num'>6,580</td><td>중간</td><td class='num'>0</td><td class='num small'>B0/C0/S0</td></tr><tr><td><strong>시디즈GX</strong></td><td class='num'>4,890</td><td class='num'>1,660</td><td class='num'>3,230</td><td>중간</td><td class='num'>90</td><td class='num small'>B30/C30/S30</td></tr><tr><td><strong>시디즈모브</strong></td><td class='num'>0</td><td class='num'>0</td><td class='num'>0</td><td></td><td class='num'>21</td><td class='num small'>B17/C3/S1</td></tr></tbody>
     </table>
     
 
@@ -252,7 +409,7 @@
   
     <table class="comp-table">
       <thead><tr><th>모델/브랜드</th><th class='num'>월 검색량</th><th class='num'>PC</th><th class='num'>MO</th><th>경쟁도</th><th class='num'>24h 언급</th><th>채널</th></tr></thead>
-      <tbody><tr><td><strong>듀오백</strong></td><td class='num'>43,800</td><td class='num'>28,000</td><td class='num'>15,800</td><td>중간</td><td class='num'>90</td><td class='num small'>B30/C30/S30</td></tr><tr><td><strong>사이즈오브체어</strong></td><td class='num'>10,160</td><td class='num'>3,810</td><td class='num'>6,350</td><td>중간</td><td class='num'>90</td><td class='num small'>B30/C30/S30</td></tr><tr><td><strong>클라우드백</strong></td><td class='num'>8,280</td><td class='num'>2,270</td><td class='num'>6,010</td><td>중간</td><td class='num'>89</td><td class='num small'>B26/C27/S36</td></tr><tr><td><strong>마이사이즈체어</strong></td><td class='num'>1,980</td><td class='num'>750</td><td class='num'>1,230</td><td>중간</td><td class='num'>92</td><td class='num small'>B31/C30/S31</td></tr></tbody>
+      <tbody><tr><td><strong>듀오백</strong></td><td class='num'>43,800</td><td class='num'>28,000</td><td class='num'>15,800</td><td>중간</td><td class='num'>90</td><td class='num small'>B30/C30/S30</td></tr><tr><td><strong>사이즈오브체어</strong></td><td class='num'>10,160</td><td class='num'>3,810</td><td class='num'>6,350</td><td>중간</td><td class='num'>80</td><td class='num small'>B30/C30/S20</td></tr><tr><td><strong>클라우드백</strong></td><td class='num'>8,280</td><td class='num'>2,270</td><td class='num'>6,010</td><td>중간</td><td class='num'>89</td><td class='num small'>B26/C27/S36</td></tr><tr><td><strong>마이사이즈체어</strong></td><td class='num'>1,980</td><td class='num'>750</td><td class='num'>1,230</td><td>중간</td><td class='num'>92</td><td class='num small'>B31/C30/S31</td></tr></tbody>
     </table>
     
 
@@ -269,7 +426,7 @@
   <h2>📊 콘텐츠 점유 (24h 신규 글)</h2>
   <table class="share-table">
     <thead><tr><th>키워드</th><th class='num'>건</th><th class='num'>점유율</th><th>비교</th></tr></thead>
-    <tbody><tr><td>허먼밀러 에어론</td><td class='num'>94</td><td class='num'>11.0%</td><td><div class='bar' style='width:33%'></div></td></tr><tr><td>마이사이즈체어</td><td class='num'>92</td><td class='num'>10.7%</td><td><div class='bar' style='width:32%'></div></td></tr><tr><td>시디즈 GX</td><td class='num'>90</td><td class='num'>10.5%</td><td><div class='bar' style='width:32%'></div></td></tr><tr><td>사이즈오브체어</td><td class='num'>90</td><td class='num'>10.5%</td><td><div class='bar' style='width:32%'></div></td></tr><tr><td>듀오백</td><td class='num'>90</td><td class='num'>10.5%</td><td><div class='bar' style='width:32%'></div></td></tr><tr><td>클라우드백</td><td class='num'>89</td><td class='num'>10.4%</td><td><div class='bar' style='width:31%'></div></td></tr><tr><td>레니프</td><td class='num'>83</td><td class='num'>9.7%</td><td><div class='bar' style='width:29%'></div></td></tr><tr><td>시디즈 T50</td><td class='num'>82</td><td class='num'>9.6%</td><td><div class='bar' style='width:29%'></div></td></tr><tr><td>시디즈 T60</td><td class='num'>81</td><td class='num'>9.4%</td><td><div class='bar' style='width:28%'></div></td></tr><tr><td>유니백체어 프로</td><td class='num'>46</td><td class='num'>5.4%</td><td><div class='bar' style='width:16%'></div></td></tr><tr><td>시디즈 모브</td><td class='num'>21</td><td class='num'>2.4%</td><td><div class='bar' style='width:7%'></div></td></tr></tbody>
+    <tbody><tr><td>시디즈 T60</td><td class='num'>105</td><td class='num'>11.1%</td><td><div class='bar' style='width:33%'></div></td></tr><tr><td>허먼밀러 에어론</td><td class='num'>94</td><td class='num'>10.0%</td><td><div class='bar' style='width:30%'></div></td></tr><tr><td>마이사이즈체어</td><td class='num'>92</td><td class='num'>9.7%</td><td><div class='bar' style='width:29%'></div></td></tr><tr><td>시디즈 GX</td><td class='num'>90</td><td class='num'>9.5%</td><td><div class='bar' style='width:28%'></div></td></tr><tr><td>듀오백</td><td class='num'>90</td><td class='num'>9.5%</td><td><div class='bar' style='width:28%'></div></td></tr><tr><td>클라우드백</td><td class='num'>89</td><td class='num'>9.4%</td><td><div class='bar' style='width:28%'></div></td></tr><tr><td>레니프</td><td class='num'>83</td><td class='num'>8.8%</td><td><div class='bar' style='width:26%'></div></td></tr><tr><td>시디즈 T50</td><td class='num'>82</td><td class='num'>8.7%</td><td><div class='bar' style='width:26%'></div></td></tr><tr><td>사이즈오브체어</td><td class='num'>80</td><td class='num'>8.5%</td><td><div class='bar' style='width:26%'></div></td></tr><tr><td>유니백체어 프로</td><td class='num'>46</td><td class='num'>4.9%</td><td><div class='bar' style='width:15%'></div></td></tr><tr><td>몰입체어</td><td class='num'>40</td><td class='num'>4.2%</td><td><div class='bar' style='width:13%'></div></td></tr><tr><td>사이즈오브체어 베이직</td><td class='num'>23</td><td class='num'>2.4%</td><td><div class='bar' style='width:7%'></div></td></tr></tbody>
   </table>
 </section>
 
@@ -284,6 +441,16 @@
 <section>
   <h2>💬 콘텐츠 언급 상세 (블로그·카페·쇼핑 24h)</h2>
   <div class="content-grid">
+        <div class="content-card">
+          <h3>시디즈 T60</h3>
+          <div class="content-stats">
+            <span class="big-num">105</span>건
+            <span class="ch-split">B:23 C:28 S:54</span>
+            <span class="delta">베이스라인</span>
+          </div>
+          <ul class='samples'><li><a href="https://blog.naver.com/rooomi_/224264472787" target="_blank" rel="noopener">[blog] 시디즈 아이블의자 서울대의자 후기 추천 비교</a> <span class="meta">헛뚱이와 육아중-♥ · 20260426</span></li><li><a href="https://blog.naver.com/rooomi_/224262494627" target="_blank" rel="noopener">[blog] 시디즈 t60 air 후기 재택근무 의자 풀메쉬 허리안아픈 시원한...</a> <span class="meta">헛뚱이와 육아중-♥ · 20260425</span></li><li><a href="https://blog.naver.com/storm0403/224264460694" target="_blank" rel="noopener">[blog] [듀오백 의자] 허리 통증 안녕! 공부 효율 UP, 듀오백 브라보...</a> <span class="meta">인사이드 바디 · 20260425</span></li></ul>
+        </div>
+        
         <div class="content-card">
           <h3>허먼밀러 에어론</h3>
           <div class="content-stats">
@@ -312,16 +479,6 @@
             <span class="delta">베이스라인</span>
           </div>
           <ul class='samples'><li><a href="https://blog.naver.com/tapiu97/224269022559" target="_blank" rel="noopener">[blog] 듀오백 브라보 프리미엄 BRP200M 메쉬 컴퓨터 의자 일반베이스...</a> <span class="meta">거름망리뷰노트 · 20260429</span></li><li><a href="https://blog.naver.com/luvsol67/224267319049" target="_blank" rel="noopener">[blog] 듀오백 Q1-W AIRO 직접 써보니 허리 편안함의 차원이 다르네요</a> <span class="meta">행복한 나날 · 20260429</span></li><li><a href="https://blog.naver.com/hanbbogga_/224268997797" target="_blank" rel="noopener">[blog] “비율 무너졌다 vs 예술이다”… 제니 타임100 갈라, 듀오백...</a> <span class="meta">봉쥬르매거진 · 20260429</span></li></ul>
-        </div>
-        
-        <div class="content-card">
-          <h3>사이즈오브체어</h3>
-          <div class="content-stats">
-            <span class="big-num">90</span>건
-            <span class="ch-split">B:30 C:30 S:30</span>
-            <span class="delta">베이스라인</span>
-          </div>
-          <ul class='samples'><li><a href="https://blog.naver.com/usuxiobkp/224268941076" target="_blank" rel="noopener">[blog] 사이즈오브체어 몰입 의자 직접 써보니 이런 점 다르다</a> <span class="meta">usuxiobkp님의 블로그 · 20260429</span></li><li><a href="https://blog.naver.com/zjkimprove/224268866905" target="_blank" rel="noopener">[blog] 학생 자세교정 의자, 서울대 납품 사이즈오브체어 몰입세트...</a> <span class="meta">zjkimprove님의 블로그 · 20260429</span></li><li><a href="https://blog.naver.com/heena_mom/224268830455" target="_blank" rel="noopener">[blog] 2평 남짓 아이방꾸미기ㅣ가구옮기기 옷정리 수납침대 매트리스</a> <span class="meta">▒ 희나네집 ▒ 라이프스타일디자이너! : 비주언니 · 20260429</span></li></ul>
         </div>
         
         <div class="content-card">
@@ -365,13 +522,13 @@
         </div>
         
         <div class="content-card">
-          <h3>시디즈 T60</h3>
+          <h3>사이즈오브체어</h3>
           <div class="content-stats">
-            <span class="big-num">81</span>건
-            <span class="ch-split">B:23 C:28 S:30</span>
+            <span class="big-num">80</span>건
+            <span class="ch-split">B:30 C:30 S:20</span>
             <span class="delta">베이스라인</span>
           </div>
-          <ul class='samples'><li><a href="https://blog.naver.com/rooomi_/224264472787" target="_blank" rel="noopener">[blog] 시디즈 아이블의자 서울대의자 후기 추천 비교</a> <span class="meta">헛뚱이와 육아중-♥ · 20260426</span></li><li><a href="https://blog.naver.com/rooomi_/224262494627" target="_blank" rel="noopener">[blog] 시디즈 t60 air 후기 재택근무 의자 풀메쉬 허리안아픈 시원한...</a> <span class="meta">헛뚱이와 육아중-♥ · 20260425</span></li><li><a href="https://blog.naver.com/storm0403/224264460694" target="_blank" rel="noopener">[blog] [듀오백 의자] 허리 통증 안녕! 공부 효율 UP, 듀오백 브라보...</a> <span class="meta">인사이드 바디 · 20260425</span></li></ul>
+          <ul class='samples'><li><a href="https://blog.naver.com/usuxiobkp/224268941076" target="_blank" rel="noopener">[blog] 사이즈오브체어 몰입 의자 직접 써보니 이런 점 다르다</a> <span class="meta">usuxiobkp님의 블로그 · 20260429</span></li><li><a href="https://blog.naver.com/zjkimprove/224268866905" target="_blank" rel="noopener">[blog] 학생 자세교정 의자, 서울대 납품 사이즈오브체어 몰입세트...</a> <span class="meta">zjkimprove님의 블로그 · 20260429</span></li><li><a href="https://blog.naver.com/heena_mom/224268830455" target="_blank" rel="noopener">[blog] 2평 남짓 아이방꾸미기ㅣ가구옮기기 옷정리 수납침대 매트리스</a> <span class="meta">▒ 희나네집 ▒ 라이프스타일디자이너! : 비주언니 · 20260429</span></li></ul>
         </div>
         
         <div class="content-card">
@@ -385,13 +542,23 @@
         </div>
         
         <div class="content-card">
-          <h3>시디즈 모브</h3>
+          <h3>몰입체어</h3>
           <div class="content-stats">
-            <span class="big-num">21</span>건
-            <span class="ch-split">B:17 C:3 S:1</span>
+            <span class="big-num">40</span>건
+            <span class="ch-split">B:0 C:0 S:40</span>
             <span class="delta">베이스라인</span>
           </div>
-          <ul class='samples'><li><a href="https://blog.naver.com/hankyuldata/224256775954" target="_blank" rel="noopener">[blog] 2025년 5월 신규등록 제조업체</a> <span class="meta">한결데이타시스템 · 20260418</span></li><li><a href="https://blog.naver.com/sidiz_su/224167674713" target="_blank" rel="noopener">[blog] 알로소 에피소드 성수, 전시된 그 소파 뭐였지? &lt;전시품 상세 탐구&gt;</a> <span class="meta">시디즈 더 프로그레시브 성수 · 20260201</span></li><li><a href="https://blog.naver.com/hmh1363/224154630599" target="_blank" rel="noopener">[blog] 대전사무용가구전문 네오오피스 :충북 영동지역 OO사무실...</a> <span class="meta">대전사무용가구네오오피스-시디즈/리바트오피스전시장 · 20260121</span></li></ul>
+          <ul class='samples'><li><a href="https://smartstore.naver.com/main/products/10797416754" target="_blank" rel="noopener">[shop] 사이즈오브체어 몰입세트 서울대 납품 의자 독서실 스터디 자세교정 학생 공부 사무실</a> <span class="meta">사이즈오브 · </span></li><li><a href="https://search.shopping.naver.com/catalog/38692525967" target="_blank" rel="noopener">[shop] 사이즈오브 2FIT 몰입체어 M</a> <span class="meta">네이버 · </span></li><li><a href="https://smartstore.naver.com/main/products/10610003956" target="_blank" rel="noopener">[shop] 사이즈오브체어 몰입 스틸 스터디 독서실 자세교정 학생 공부 책상 사무실 의자</a> <span class="meta">사이즈오브 · </span></li></ul>
+        </div>
+        
+        <div class="content-card">
+          <h3>사이즈오브체어 베이직</h3>
+          <div class="content-stats">
+            <span class="big-num">23</span>건
+            <span class="ch-split">B:0 C:0 S:23</span>
+            <span class="delta">베이스라인</span>
+          </div>
+          <ul class='samples'><li><a href="https://smartstore.naver.com/main/products/8504541231" target="_blank" rel="noopener">[shop] 사이즈오브체어 베이직 3size S/M/L 사무용 컴퓨터 사무실 메쉬 의자</a> <span class="meta">사이즈오브 · </span></li><li><a href="https://search.shopping.naver.com/catalog/59487213063" target="_blank" rel="noopener">[shop] 사이즈오브 베이직 사무용의자 1개</a> <span class="meta">네이버 · </span></li><li><a href="https://search.shopping.naver.com/catalog/59683912790" target="_blank" rel="noopener">[shop] 베이직 사무용의자 편집용 컴퓨터 의자 1개</a> <span class="meta">네이버 · </span></li></ul>
         </div>
         </div>
 </section>
@@ -403,7 +570,7 @@
   옵티마이저 target 350% 는 구매완료 기준.
   <br><br>
   <code>data: chair_market.db</code> · 자동 발행 매일 08:00 KST ·
-  생성 시각 2026-04-29 12:12:38
+  생성 시각 2026-04-29 12:53:55
 </footer>
 
 </div>
@@ -462,6 +629,26 @@ if (TREND_DATES.length > 0) {
       plugins: { legend: { position: 'bottom' },
         tooltip: { mode: 'index', intersect: false } },
       scales: { y: { beginAtZero: true, title: { display: true, text: '검색 트렌드 (0-100 정규화)' } } },
+      interaction: { mode: 'nearest', axis: 'x', intersect: false }
+    }
+  });
+}
+
+// 💰 가격 모니터링 차트 (4 모델 × 최저가/평균가)
+const PM_DATES = ["2026-04-29"];
+const PM_DATASETS = [{"label": "\uc2dc\ub514\uc988 T60 \ucd5c\uc800\uac00", "data": [51200], "borderColor": "#ea580c", "backgroundColor": "#ea580c22", "tension": 0.3, "borderWidth": 2.5, "spanGaps": true}, {"label": "\uc2dc\ub514\uc988 T60 \ud3c9\uade0\uac00", "data": [429480], "borderColor": "#ea580c", "backgroundColor": "transparent", "borderDash": [4, 4], "tension": 0.3, "borderWidth": 1.2, "pointRadius": 2, "spanGaps": true}, {"label": "\uc0ac\uc774\uc988\uc624\ube0c\uccb4\uc5b4 \ubca0\uc774\uc9c1 \ucd5c\uc800\uac00", "data": [345100], "borderColor": "#2563eb", "backgroundColor": "#2563eb22", "tension": 0.3, "borderWidth": 2.5, "spanGaps": true}, {"label": "\uc0ac\uc774\uc988\uc624\ube0c\uccb4\uc5b4 \ubca0\uc774\uc9c1 \ud3c9\uade0\uac00", "data": [464733], "borderColor": "#2563eb", "backgroundColor": "transparent", "borderDash": [4, 4], "tension": 0.3, "borderWidth": 1.2, "pointRadius": 2, "spanGaps": true}, {"label": "\uc0ac\uc774\uc988\uc624\ube0c\uccb4\uc5b4 \ud504\ub9ac\ubbf8\uc5c4 \ucd5c\uc800\uac00", "data": [711000], "borderColor": "#7c3aed", "backgroundColor": "#7c3aed22", "tension": 0.3, "borderWidth": 2.5, "spanGaps": true}, {"label": "\uc0ac\uc774\uc988\uc624\ube0c\uccb4\uc5b4 \ud504\ub9ac\ubbf8\uc5c4 \ud3c9\uade0\uac00", "data": [853411], "borderColor": "#7c3aed", "backgroundColor": "transparent", "borderDash": [4, 4], "tension": 0.3, "borderWidth": 1.2, "pointRadius": 2, "spanGaps": true}, {"label": "\ubab0\uc785\uccb4\uc5b4 \ucd5c\uc800\uac00", "data": [58900], "borderColor": "#dc2626", "backgroundColor": "#dc262622", "tension": 0.3, "borderWidth": 2.5, "spanGaps": true}, {"label": "\ubab0\uc785\uccb4\uc5b4 \ud3c9\uade0\uac00", "data": [144962], "borderColor": "#dc2626", "backgroundColor": "transparent", "borderDash": [4, 4], "tension": 0.3, "borderWidth": 1.2, "pointRadius": 2, "spanGaps": true}];
+if (PM_DATES.length > 0 && document.getElementById('priceChart')) {
+  new Chart(document.getElementById('priceChart'), {
+    type: 'line',
+    data: { labels: PM_DATES, datasets: PM_DATASETS },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom' },
+        tooltip: { mode: 'index', intersect: false,
+          callbacks: { label: ctx => ctx.dataset.label + ': ₩' + (ctx.parsed.y || 0).toLocaleString() }
+        } },
+      scales: { y: { beginAtZero: false,
+        title: { display: true, text: '가격 (KRW)' },
+        ticks: { callback: v => '₩' + (v/1000).toFixed(0) + 'K' } } },
       interaction: { mode: 'nearest', axis: 'x', intersect: false }
     }
   });
